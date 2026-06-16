@@ -1,0 +1,32 @@
+{
+    "head_locations": {
+        "code": 100,
+        "message": "Command executed.",
+        "output": "[\n    {\n        \"location_id\": 0,\n        \"name\": \"lokalizacja nieznana\"\n    },\n    {\n        \"location_id\": 1,\n        \"name\": \"Berlin\"\n    },\n    {\n        \"location_id\": 2,\n        \"name\": \"Londyn\"\n    },\n    {\n        \"location_id\": 3,\n        \"name\": \"Pary\\u017c\"\n    },\n    {\n        \"location_id\": 4,\n        \"name\": \"Rzym\"\n"
+    },
+    "head_time_logs": {
+        "code": 100,
+        "message": "Command executed.",
+        "output": "date;description;location;place\r\n1990-01-01;Powstanie pierwszego komercyjnego dostawcy internetu The World (world.std.com) w USA;63;617713\r\n1990-01-01;Wchodzi w życie pakiet ustaw gospodarczych z planu Balcerowicza - liberalizacja cen i wprowadzenie wymienialności złotego;24;969254\r\n1990-01-03;Upadek rządu Tadeusza Mazowieckiego - przyspieszone wybory parlamentarne w Polsce;24;933912\r\n1990-01-07;Wieża telewizyjna w Tower One w Pradze spłonęła podczas strajku;18;455302\r\n1990-01-10;São Paulo ogłosiło stan klęski żywiołowej z powodu powodzi;85;936446\r\n1990-01-11;W Bangladeszu uderzył cyklon - ponad 100 ofiar śmiertelnych;109;873061\r\n1990-01-12;Sejm uchwala ustawę o NBP jako centralnym banku państwa i prawie bankowym;24;743955\r\n1990-01-15;Minister finansów Leszek Balcerowicz ogłasza szczegóły planu reform gospodarczych;24;596463\r\n1990-01-20;Azerbaijan declares sovereignty and independence from USSR;122;879461\r\n1990-01-22;Robert Morris został skazany za stworzenie pierwszego internetowego worma w 1988;63;744590\r\n1990-01-25;Avianca Flight 52 rozbił się na Long Island - 73 ofiary;63;617713\r\n1990-01-29;Premier Tadeusz Mazowiecki odwiedza RFN - pierwsza wizyta polskiego premiera w Niemczech Zachodnich;1;311415\r\n1990-01-31;Pierwsze McDonalda otwarte w Moskwie;40;909675\r\n1990-02-02;Prezydent RPA de Klerk znosi zakaz działalności ANC;134;296513\r\n1990-02-07;Partia Komunistyczna ZSRR zgodziła się na wielopartyjność;40;497730\r\n1990-02-08;Sejm uchwala ustawę o spółdzielniach mieszkaniowych;24;441977\r\n1990-02-11;Nelson Mandela zostaje uwolniony z więzienia po 27 latach;134;878030\r\n1990-02-13;Podwójne samobójstwo meksykańskich braci - skok ze spadochronem bez spadochronu;72;718435\r\n1990-02-15;Zjazd partii komunistycznej w Budapeszcie - zmiana nazwy na MSZP;19;513116\r\n"
+    },
+    "head_gps": {
+        "code": 100,
+        "message": "Command executed.",
+        "output": "[\n  {\n    \"latitude\": 24.896773,\n    \"longitude\": 67.071297,\n    \"type\": \"cmentarz\",\n    \"location_id\": 108,\n    \"entry_id\": 439563\n  },\n  {\n    \"latitude\": 5.099014,\n    \"longitude\": -52.76667,\n    \"type\": \"stacja benzynowa\",\n    \"location_id\": 159,\n    \"entry_id\": 258176\n  },\n  {\n    \"latitude\": 45.968695,\n    \"longitude\": 63.255916,\n    \"type\": \"szkoła\",\n    \"location_id\": 158,\n"
+    },
+    "grep_rafal_csv": {
+        "code": 100,
+        "message": "Command executed.",
+        "output": "No rafal in time_logs.csv\n"
+    },
+    "grep_rafal_locations": {
+        "code": 100,
+        "message": "Command executed.",
+        "output": "No rafal in locations.json\n"
+    },
+    "grep_rafal_gps": {
+        "code": 100,
+        "message": "Command executed.",
+        "output": "No rafal in gps.json\n"
+    }
+}

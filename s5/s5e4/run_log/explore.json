@@ -1,0 +1,41 @@
+{
+    "help_string": {
+        "status_code": 400,
+        "data": {
+            "code": -21,
+            "message": "\"answer\" field is not valid JSON: Syntax error",
+            "error": "\"answer\" field is not valid JSON: Syntax error"
+        }
+    },
+    "help_dict": {
+        "status_code": 400,
+        "data": {
+            "code": -970,
+            "message": "Invalid \"command\". Use one of: start, left, right, go."
+        }
+    },
+    "start_game": {
+        "status_code": 200,
+        "data": {
+            "code": 110,
+            "message": "New game started. Map is 3 by 12 cells. You are at column 1, middle row. Reach the base at the last column.",
+            "player": {
+                "row": 2,
+                "col": 1
+            },
+            "base": {
+                "row": 1,
+                "col": 12
+            },
+            "currentColumn": {
+                "column": 1,
+                "yourRow": 2,
+                "stoneRow": 3,
+                "freeRows": [
+                    1,
+                    2
+                ]
+            }
+        }
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "grep_location": {
+        "error": "400 Client Error: Bad Request for url: https://hub.ag3nts.org/verify"
+    },
+    "grep_gps": {
+        "code": 100,
+        "message": "Command executed.",
+        "output": "    \"latitude\": 53.432303,\n    \"longitude\": 18.968774,\n    \"type\": \"jaskinia\",\n    \"location_id\": 219,\n    \"entry_id\": 954634\n"
+    }
+}

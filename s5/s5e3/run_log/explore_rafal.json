@@ -1,0 +1,28 @@
+{
+    "grep_rafal": {
+        "error": "400 Client Error: Bad Request for url: https://hub.ag3nts.org/verify"
+    },
+    "grep_rafa": {
+        "error": "400 Client Error: Bad Request for url: https://hub.ag3nts.org/verify"
+    },
+    "grep_cialo": {
+        "code": 100,
+        "message": "Command executed.",
+        "output": "2024-11-13;W jaskini znaleziono ciało mężczyzny. Policja bada okoliczności zdarzenia;219;954634\r\n"
+    },
+    "grep_znaleziono": {
+        "code": 100,
+        "message": "Command executed.",
+        "output": "2024-11-13;W jaskini znaleziono ciało mężczyzny. Policja bada okoliczności zdarzenia;219;954634\r\n"
+    },
+    "grep_zwloki": {
+        "code": 100,
+        "message": "Command executed.",
+        "output": "no zwłoki\n"
+    },
+    "grep_szczatki": {
+        "code": 100,
+        "message": "Command executed.",
+        "output": "no szczątki\n"
+    }
+}

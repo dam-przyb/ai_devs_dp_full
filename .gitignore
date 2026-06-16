@@ -1,0 +1,61 @@
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Local configuration / API keys
+.env
+
+# Python caching & compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Frontend dependencies and builds
+node_modules/
+dist-ssr/
+*.local
+
+# Logs and databases
+*.log
+local_database.db
+sqlite.db
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Zip files / archives
+*.zip
+*.tar.gz
+*.rar
+
+# IDE/Editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+.project
+.pydevproject
+.settings/

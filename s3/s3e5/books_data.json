@@ -1,0 +1,115 @@
+{
+  "terrain and movement rules": {
+    "code": 220,
+    "message": "These are the three best matching notes from a much larger archive.",
+    "query": "terrain and movement rules",
+    "search_mode": "full_text",
+    "returned": 3,
+    "notes": [
+      {
+        "id": "legend-markers",
+        "title": "Map legend and terrain markers",
+        "content": "The map uses a compact set of symbols, and every letter matters during route planning. The letter T marks a tree tile, W marks water, and R marks rocks that block movement completely. The letter S marks the starting position, while G marks the goal that ends the mission successfully. If someone misreads even one marker, the whole path can collapse before the traveler reaches the city. Treat the legend as the first thing to decode before testing any route.",
+        "score": 14,
+        "matched_terms": [
+          "terrain",
+          "movement"
+        ]
+      },
+      {
+        "id": "travel-methods",
+        "title": "Available travel methods",
+        "content": "The available travel methods are walk, horse, car, and rocket. Walking is the default on-foot mode, while horse, car, and rocket are the selectable vehicles for departure. There is also one special transition command worth remembering: dismount. It is not a separate vehicle, but it lets the traveler leave the current vehicle and continue the route on foot.",
+        "score": 11,
+        "matched_terms": [
+          "movement"
+        ]
+      },
+      {
+        "id": "maps-endpoint",
+        "title": "Getting terrain maps for target cities",
+        "content": "Terrain maps for any city can be obtained from the /api/maps endpoint. To get the correct map, send the name of the city you want to reach in the request. This makes the maps service the standard source of terrain data when planning a mission toward a specific destination. If someone needs a fresh layout for route analysis, that endpoint is where to ask first.",
+        "score": 11,
+        "matched_terms": [
+          "terrain"
+        ]
+      }
+    ]
+  },
+  "food and fuel consumption": {
+    "code": 220,
+    "message": "These are the three best matching notes from a much larger archive.",
+    "query": "food and fuel consumption",
+    "search_mode": "full_text",
+    "returned": 3,
+    "notes": [
+      {
+        "id": "resource-consumption",
+        "title": "When fuel and food are consumed",
+        "content": "Fuel and food are consumed at the moment the traveler moves across the map. That means resources are not spent when merely selecting the vehicle, but only when an actual step is executed. If a vehicle runs out of fuel, the mission is considered failed immediately. If the traveler runs out of food, the mission is also treated as failed. Resource planning is therefore just as important as choosing the correct path.",
+        "score": 33,
+        "matched_terms": [
+          "fuel",
+          "food",
+          "consumption"
+        ]
+      },
+      {
+        "id": "trees-and-burn",
+        "title": "Trees and additional fuel burn",
+        "content": "Tree tiles are not dangerous by themselves and can be crossed by any travel mode, including all vehicles. Their real impact is on fuel usage: entering a tile marked with T increases fuel consumption for powered travel by an additional 0.2 units. That extra burn may look small in isolation, but it can decide whether a route is still viable near the end of the mission. Walk mode does not care about fuel, but any route that relies on engines should count that penalty carefully. A path through wooded terrain can be more expensive than it first appears.",
+        "score": 22,
+        "matched_terms": [
+          "fuel",
+          "consumption"
+        ]
+      },
+      {
+        "id": "no-gas-stations",
+        "title": "No gas stations on the map",
+        "content": "There is not a single gas station anywhere on the map, so every route must be planned with fuel reserves in mind from the very first step. No mid-mission refuel is possible, which makes optimistic calculations a great way to get stranded. If fuel might not be enough for the final stretch, the safer strategy is to leave the vehicle before that happens and finish the last tiles on foot. The command used to abandon the vehicle and continue walking is dismount.",
+        "score": 11,
+        "matched_terms": [
+          "fuel"
+        ]
+      }
+    ]
+  },
+  "movement speed": {
+    "code": 220,
+    "message": "These are the three best matching notes from a much larger archive.",
+    "query": "movement speed",
+    "search_mode": "full_text",
+    "returned": 3,
+    "notes": [
+      {
+        "id": "travel-methods",
+        "title": "Available travel methods",
+        "content": "The available travel methods are walk, horse, car, and rocket. Walking is the default on-foot mode, while horse, car, and rocket are the selectable vehicles for departure. There is also one special transition command worth remembering: dismount. It is not a separate vehicle, but it lets the traveler leave the current vehicle and continue the route on foot.",
+        "score": 11,
+        "matched_terms": [
+          "movement"
+        ]
+      },
+      {
+        "id": "resource-consumption",
+        "title": "When fuel and food are consumed",
+        "content": "Fuel and food are consumed at the moment the traveler moves across the map. That means resources are not spent when merely selecting the vehicle, but only when an actual step is executed. If a vehicle runs out of fuel, the mission is considered failed immediately. If the traveler runs out of food, the mission is also treated as failed. Resource planning is therefore just as important as choosing the correct path.",
+        "score": 11,
+        "matched_terms": [
+          "movement"
+        ]
+      },
+      {
+        "id": "vehicle-selection",
+        "title": "Vehicle choice, walking, and dismount",
+        "content": "The vehicle can be selected only at the very beginning of the journey. Once the mission starts, the traveler cannot switch from one vehicle to another. There is, however, one exception built into the rules: the traveler may leave the current vehicle and continue on foot. The command used for that action is dismount. After dismounting, movement continues in walk mode, which is useful when the route demands flexibility rather than speed.",
+        "score": 6,
+        "matched_terms": [
+          "movement",
+          "speed"
+        ]
+      }
+    ]
+  }
+}

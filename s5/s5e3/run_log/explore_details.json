@@ -1,0 +1,13 @@
+{
+    "get_location": {
+        "error": "400 Client Error: Bad Request for url: https://hub.ag3nts.org/verify"
+    },
+    "get_gps": {
+        "error": "400 Client Error: Bad Request for url: https://hub.ag3nts.org/verify"
+    },
+    "grep_date_logs": {
+        "code": 100,
+        "message": "Command executed.",
+        "output": "2024-11-13;W jaskini znaleziono ciało mężczyzny. Policja bada okoliczności zdarzenia;219;954634\r\n"
+    }
+}

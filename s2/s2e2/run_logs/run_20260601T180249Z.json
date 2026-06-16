@@ -1,0 +1,236 @@
+{
+  "task": "electricity",
+  "run_id": "20260601T180249Z",
+  "timestamp": "2026-06-01T18:02:59.122659+00:00",
+  "status": "solved",
+  "error": null,
+  "flag": "{FLG:ROTATEIT}",
+  "model": "google/gemini-3.5-flash",
+  "apikey_masked": "9b2b...1394",
+  "moves_planned": 9,
+  "moves_executed": 9,
+  "remaining_mismatches": [],
+  "history_summary": [],
+  "current_grid": {
+    "row_lines": [
+      100,
+      197,
+      292,
+      385
+    ],
+    "col_lines": [
+      238,
+      333,
+      428,
+      523
+    ]
+  },
+  "target_grid": {
+    "row_lines": [
+      90,
+      186,
+      282,
+      375
+    ],
+    "col_lines": [
+      142,
+      237,
+      332,
+      427
+    ]
+  },
+  "current_edge_map": [
+    [
+      "ES",
+      "NES",
+      "NS"
+    ],
+    [
+      "EW",
+      "ESW",
+      "ESW"
+    ],
+    [
+      "NSW",
+      "NW",
+      "NE"
+    ]
+  ],
+  "target_edge_map": [
+    [
+      "ES",
+      "ESW",
+      "EW"
+    ],
+    [
+      "NS",
+      "NES",
+      "ESW"
+    ],
+    [
+      "NEW",
+      "NW",
+      "NE"
+    ]
+  ],
+  "rotation_decisions": [
+    {
+      "row": 1,
+      "col": 1,
+      "turns": 0,
+      "best_score": 0.927797833935018,
+      "second_score": 0.3771760154738878
+    },
+    {
+      "row": 1,
+      "col": 2,
+      "turns": 1,
+      "best_score": 0.9095446038677479,
+      "second_score": 0.45208728652751423
+    },
+    {
+      "row": 1,
+      "col": 3,
+      "turns": 1,
+      "best_score": 1.0,
+      "second_score": 0.75
+    },
+    {
+      "row": 2,
+      "col": 1,
+      "turns": 3,
+      "best_score": 1.0,
+      "second_score": 0.75
+    },
+    {
+      "row": 2,
+      "col": 2,
+      "turns": 3,
+      "best_score": 0.9789674952198852,
+      "second_score": 0.4956647398843931
+    },
+    {
+      "row": 2,
+      "col": 3,
+      "turns": 0,
+      "best_score": 0.947334200260078,
+      "second_score": 0.46598139990210474
+    },
+    {
+      "row": 3,
+      "col": 1,
+      "turns": 1,
+      "best_score": 1.0,
+      "second_score": 0.48001925854597977
+    },
+    {
+      "row": 3,
+      "col": 2,
+      "turns": 0,
+      "best_score": 1.0,
+      "second_score": 0.3853092783505155
+    },
+    {
+      "row": 3,
+      "col": 3,
+      "turns": 0,
+      "best_score": 1.0,
+      "second_score": 0.3853092783505155
+    }
+  ],
+  "move_commands": [
+    "1x2",
+    "1x3",
+    "2x1",
+    "2x1",
+    "2x1",
+    "2x2",
+    "2x2",
+    "2x2",
+    "3x1"
+  ],
+  "llm_audit": "```json\n{\n  \"risk_level\": \"low\",\n  \"concerns\": \"None. All rotation decisions perfectly align the current edge map to the target edge map with high confidence scores and clear separation from secondary options.\",\n  \"recommendation\": \"Proceed with the rotation plan as specified.\"\n}\n```",
+  "api_events": [
+    {
+      "index": 1,
+      "rotate": "1x2",
+      "response": {
+        "code": 1,
+        "message": "Done"
+      },
+      "flag_detected": null
+    },
+    {
+      "index": 2,
+      "rotate": "1x3",
+      "response": {
+        "code": 1,
+        "message": "Done"
+      },
+      "flag_detected": null
+    },
+    {
+      "index": 3,
+      "rotate": "2x1",
+      "response": {
+        "code": 1,
+        "message": "Done"
+      },
+      "flag_detected": null
+    },
+    {
+      "index": 4,
+      "rotate": "2x1",
+      "response": {
+        "code": 1,
+        "message": "Done"
+      },
+      "flag_detected": null
+    },
+    {
+      "index": 5,
+      "rotate": "2x1",
+      "response": {
+        "code": 1,
+        "message": "Done"
+      },
+      "flag_detected": null
+    },
+    {
+      "index": 6,
+      "rotate": "2x2",
+      "response": {
+        "code": 1,
+        "message": "Done"
+      },
+      "flag_detected": null
+    },
+    {
+      "index": 7,
+      "rotate": "2x2",
+      "response": {
+        "code": 1,
+        "message": "Done"
+      },
+      "flag_detected": null
+    },
+    {
+      "index": 8,
+      "rotate": "2x2",
+      "response": {
+        "code": 1,
+        "message": "Done"
+      },
+      "flag_detected": null
+    },
+    {
+      "index": 9,
+      "rotate": "3x1",
+      "response": {
+        "code": 0,
+        "message": "{FLG:ROTATEIT}"
+      },
+      "flag_detected": "{FLG:ROTATEIT}"
+    }
+  ]
+}

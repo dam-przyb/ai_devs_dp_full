@@ -1,0 +1,100 @@
+(.venv) PS C:\zz_projects\ai_devs4_part2> python s5/s5e4/mine_hints.py
+Total confirmed hint→stone_row pairs: 29
+
+MISMATCHES (4):
+  [20260616_160148.json step 2] pilot=1 base=1
+    hint: "Your instruments read empty space in front and to the left. The solid threat is beside starboard."
+    predicted: [2]  actual: 3
+
+  [20260616_161545.json step 2] pilot=1 base=1
+    hint: "Nothing blocks the bow, and port remains quiet. The rock is the thing shadowing the starboard side."
+    predicted: [3]  actual: 2
+
+  [20260616_161545.json step 5] pilot=1 base=1
+    hint: "The only side you should distrust is starboard. Forward and port look clear."
+    predicted: [3]  actual: 2
+
+  [20260616_162655.json step 5] pilot=3 base=3
+    hint: "Your right flank is harmless, and the route ahead is still passable. The rock has taken up position by port."
+    predicted: [2]  actual: 1
+
+
+=== ALL HINTS AND THEIR ACTUAL STONE ROWS ===
+
+HINT: "Flight data shows safe passage ahead and to port. The obstruction is the one riding off starboard."
+  ✓ pilot=1 base=1 → actual=3 (predicted=[3])
+
+HINT: "Forward looks clear, and the space to your left is clean. The rock is hanging off the other side of the hull."
+  ✓ pilot=1 base=1 → actual=2 (predicted=[2, 3])
+
+HINT: "Nothing blocks the bow, and port remains quiet. The rock is the thing shadowing the starboard side."
+  ✗ pilot=1 base=1 → actual=2 (predicted=[3])
+
+HINT: "Nothing threatens either side, yet the route straight out of the cockpit is blocked by a rock."
+  ✓ pilot=2 base=1 → actual=2 (predicted=[2])
+  ✓ pilot=3 base=3 → actual=3 (predicted=[3])
+  ✓ pilot=3 base=3 → actual=3 (predicted=[3])
+
+HINT: "Port is the side that currently carries the risk. The bow and starboard side remain clear."
+  ✓ pilot=3 base=3 → actual=2 (predicted=[1, 2])
+  ✓ pilot=2 base=1 → actual=1 (predicted=[1])
+
+HINT: "The bow can keep going, and starboard gives no warning. The obstacle is resting beside port."
+  ✓ pilot=3 base=3 → actual=1 (predicted=[1])
+
+HINT: "The danger is not in front and not toward port. It is posted on the starboard side of the craft."
+  ✓ pilot=1 base=1 → actual=2 (predicted=[2, 3])
+
+HINT: "The obstacle is centered on your flight line. Both side lanes remain open."
+  ✓ pilot=1 base=1 → actual=1 (predicted=[1])
+  ✓ pilot=2 base=3 → actual=2 (predicted=[2])
+
+HINT: "The only side you should distrust is port. Forward and starboard look clear."
+  ✓ pilot=3 base=3 → actual=1 (predicted=[1, 2])
+
+HINT: "The only side you should distrust is starboard. Forward and port look clear."
+  ✓ pilot=1 base=1 → actual=3 (predicted=[2, 3])
+  ✗ pilot=1 base=1 → actual=2 (predicted=[3])
+
+HINT: "The path beside either wing is harmless. The bow faces a rock."
+  ✓ pilot=2 base=3 → actual=2 (predicted=[2])
+
+HINT: "The path on your port side stays open, and nothing blocks the nose of the craft. The trouble is sitting off your starboard wing."
+  ✓ pilot=2 base=3 → actual=3 (predicted=[3])
+
+HINT: "The path on your starboard side stays open, and nothing blocks the nose of the craft. The trouble is sitting off your port wing."
+  ✓ pilot=3 base=3 → actual=2 (predicted=[2])
+
+HINT: "The rock is on the same line as your current trajectory. The sides are open."
+  ✓ pilot=2 base=3 → actual=2 (predicted=[2])
+
+HINT: "The scanner shows open space straight ahead and clean air to the left. The rock is keeping pace on the starboard side."
+  ✓ pilot=1 base=1 → actual=2 (predicted=[2, 3])
+
+HINT: "The scanner shows open space straight ahead and clean air to the right. The rock is keeping pace on the port side."
+  ✓ pilot=3 base=3 → actual=2 (predicted=[2])
+
+HINT: "The side opposite starboard is where the danger sits. Straight ahead remains open."
+  ✓ pilot=3 base=3 → actual=1 (predicted=[1])
+
+HINT: "The stone is centered in your line of travel, while port and starboard remain clear."
+  ✓ pilot=3 base=3 → actual=3 (predicted=[3])
+
+HINT: "There is safe air before you and along port. The rough chunk is off the starboard side."
+  ✓ pilot=2 base=1 → actual=3 (predicted=[3])
+
+HINT: "You are clear on both sides, but continuing without turning would send you into the rock ahead."
+  ✓ pilot=1 base=1 → actual=1 (predicted=[1])
+
+HINT: "You can keep the front line and the starboard side out of worry. The rock occupies the port-side position."
+  ✓ pilot=3 base=3 → actual=2 (predicted=[2])
+
+HINT: "Your forward corridor is empty, and the port side is no concern. The hazard is fixed off starboard."
+  ✓ pilot=1 base=1 → actual=3 (predicted=[2, 3])
+
+HINT: "Your instruments read empty space in front and to the left. The solid threat is beside starboard."
+  ✗ pilot=1 base=1 → actual=3 (predicted=[2])
+
+HINT: "Your right flank is harmless, and the route ahead is still passable. The rock has taken up position by port."
+  ✗ pilot=3 base=3 → actual=1 (predicted=[2])
+(.venv) PS C:\zz_projects\ai_devs4_part2> 

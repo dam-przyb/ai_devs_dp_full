@@ -1,0 +1,581 @@
+{
+    "timestamp": "20260616_172401",
+    "start_response": {
+        "code": 110,
+        "message": "New game started. Map is 3 by 12 cells. You are at column 1, middle row. Reach the base at the last column.",
+        "player": {
+            "row": 2,
+            "col": 1
+        },
+        "base": {
+            "row": 1,
+            "col": 12
+        },
+        "currentColumn": {
+            "column": 1,
+            "yourRow": 2,
+            "stoneRow": 3,
+            "freeRows": [
+                1,
+                2
+            ]
+        }
+    },
+    "steps": [
+        {
+            "step_number": 1,
+            "current_col": 1,
+            "current_row": 2,
+            "scanner_checks": [
+                {
+                    "raw_response": "\"It'S cLEeeAR!\"",
+                    "status": "clear"
+                }
+            ],
+            "hint_raw": "You are clear on both sides, but continuing without turning would send you into the rock ahead.",
+            "hint_llm_response": "{\"rock_rows\": [2], \"reasoning\": \"Sides clear confirms rock is ahead; ahead from row 2 = row 2.\"}",
+            "hint_interpretation_mode": "llm_single_row",
+            "pilot_at_edge": false,
+            "stone_rows": [
+                2
+            ],
+            "candidates": {
+                "all": [
+                    [
+                        "left",
+                        1
+                    ],
+                    [
+                        "go",
+                        2
+                    ],
+                    [
+                        "right",
+                        3
+                    ]
+                ],
+                "valid_non_stone": [
+                    [
+                        "left",
+                        1
+                    ],
+                    [
+                        "right",
+                        3
+                    ]
+                ]
+            },
+            "safe_rows_after_filter": [
+                1,
+                3
+            ],
+            "selected_move": {
+                "command": "left",
+                "target_row": 1
+            },
+            "move_response": {
+                "code": 120,
+                "message": "Move accepted.",
+                "player": {
+                    "row": 1,
+                    "col": 2
+                },
+                "currentColumn": {
+                    "column": 2,
+                    "yourRow": 1,
+                    "stoneRow": 2,
+                    "freeRows": [
+                        1,
+                        3
+                    ]
+                }
+            },
+            "error": null,
+            "hint_llm_prompt": "You are a navigator on a 3-row grid (rows 1, 2, 3).\n- Row 1 is the top row.\n- Row 2 is the middle row.\n- Row 3 is the bottom row.\n\nThe pilot is currently at row 2. The target base is at row 1.\n\nAll hints are VEHICLE-RELATIVE — described from the pilot's own perspective at row 2.\n\nDIRECTION TABLE for pilot at row 2:\n  \"ahead / front / bow / nose / cockpit / trajectory / flight line / center / straight out\" -> [2]\n  \"port / left / larboard\" -> [1] only\n  \"starboard / right\" -> [3] only\n  \"sides / flanks / wings\" (when clear) -> confirms rock is NOT on those sides, rock is ahead\n\nGROUND TRUTH EXAMPLES (all confirmed correct from actual game data):\n\nExample 1 — starboard from row 2 = row 3 only:\n- Hint: \"The path on your port side stays open, and nothing blocks the nose of the craft. The trouble is sitting off your starboard wing.\"\n- Pilot Row: 2, Base Row: 3\n- Output: {\"rock_rows\": [3], \"reasoning\": \"Starboard from row 2 = row 3.\"}\n\nExample 2 — port from row 3 = BOTH rows 1 and 2 (edge rule):\n- Hint: \"Port is the side that currently carries the risk. The bow and starboard side remain clear.\"\n- Pilot Row: 3, Base Row: 3\n- Output: {\"rock_rows\": [1, 2], \"reasoning\": \"Port from edge row 3 = [1, 2] — both open-side rows.\"}\n\nExample 3 — starboard from row 1 = BOTH rows 2 and 3 (CRITICAL edge rule):\n- Hint: \"The only side you should distrust is starboard. Forward and port look clear.\"\n- Pilot Row: 1, Base Row: 1\n- Output: {\"rock_rows\": [2, 3], \"reasoning\": \"Starboard from edge row 1 = [2, 3] — both open-side rows.\"}\n\nNow apply the direction table and rules above to the following hint.\nReturn a JSON object with:\n- \"rock_rows\": list of integers (1, 2, or 3) where the rock is located\n- \"reasoning\": brief explanation referencing the direction table\n\nHint to parse: \"You are clear on both sides, but continuing without turning would send you into the rock ahead.\"\nPilot row: 2 | Base row: 1\n\nReturn ONLY the JSON. No markdown code block wrapper."
+        },
+        {
+            "step_number": 2,
+            "current_col": 2,
+            "current_row": 1,
+            "scanner_checks": [
+                {
+                    "raw_response": "\"it's cLeeeeAR!\"",
+                    "status": "clear"
+                }
+            ],
+            "hint_raw": "The empty side is port, and the path ahead is also safe. The rock marks the starboard side.",
+            "hint_llm_response": "{\"rock_rows\": [2, 3], \"reasoning\": \"Starboard from edge row 1 = [2, 3] — both open-side rows.\"}",
+            "hint_interpretation_mode": "llm_multi_row",
+            "pilot_at_edge": true,
+            "stone_rows": [
+                2,
+                3
+            ],
+            "candidates": {
+                "all": [
+                    [
+                        "go",
+                        1
+                    ],
+                    [
+                        "right",
+                        2
+                    ]
+                ],
+                "valid_non_stone": [
+                    [
+                        "go",
+                        1
+                    ]
+                ]
+            },
+            "safe_rows_after_filter": [
+                1
+            ],
+            "selected_move": {
+                "command": "go",
+                "target_row": 1
+            },
+            "move_response": {
+                "code": 120,
+                "message": "Move accepted.",
+                "player": {
+                    "row": 1,
+                    "col": 3
+                },
+                "currentColumn": {
+                    "column": 3,
+                    "yourRow": 1,
+                    "stoneRow": 2,
+                    "freeRows": [
+                        1,
+                        3
+                    ]
+                }
+            },
+            "error": null,
+            "hint_llm_prompt": "You are a navigator on a 3-row grid (rows 1, 2, 3).\n- Row 1 is the top row.\n- Row 2 is the middle row.\n- Row 3 is the bottom row.\n\nThe pilot is currently at row 1. The target base is at row 1.\n\nAll hints are VEHICLE-RELATIVE — described from the pilot's own perspective at row 1.\n\nDIRECTION TABLE for pilot at row 1:\n  \"ahead / front / bow / nose / cockpit / trajectory / flight line / center / straight out\" -> [1]\n  \"port / left / larboard\" -> [1] (you are already AT the top wall — port does not apply; treat as ahead)\n  \"starboard / right\" -> [2, 3] — BOTH rows (pilot is at top edge, so entire open side is starboard)\n  \"sides / flanks / wings\" (when clear) -> confirms rock is NOT on those sides, rock is ahead\n\nGROUND TRUTH EXAMPLES (all confirmed correct from actual game data):\n\nExample 1 — starboard from row 2 = row 3 only:\n- Hint: \"The path on your port side stays open, and nothing blocks the nose of the craft. The trouble is sitting off your starboard wing.\"\n- Pilot Row: 2, Base Row: 3\n- Output: {\"rock_rows\": [3], \"reasoning\": \"Starboard from row 2 = row 3.\"}\n\nExample 2 — port from row 3 = BOTH rows 1 and 2 (edge rule):\n- Hint: \"Port is the side that currently carries the risk. The bow and starboard side remain clear.\"\n- Pilot Row: 3, Base Row: 3\n- Output: {\"rock_rows\": [1, 2], \"reasoning\": \"Port from edge row 3 = [1, 2] — both open-side rows.\"}\n\nExample 3 — starboard from row 1 = BOTH rows 2 and 3 (CRITICAL edge rule):\n- Hint: \"The only side you should distrust is starboard. Forward and port look clear.\"\n- Pilot Row: 1, Base Row: 1\n- Output: {\"rock_rows\": [2, 3], \"reasoning\": \"Starboard from edge row 1 = [2, 3] — both open-side rows.\"}\n\nNow apply the direction table and rules above to the following hint.\nReturn a JSON object with:\n- \"rock_rows\": list of integers (1, 2, or 3) where the rock is located\n- \"reasoning\": brief explanation referencing the direction table\n\nHint to parse: \"The empty side is port, and the path ahead is also safe. The rock marks the starboard side.\"\nPilot row: 1 | Base row: 1\n\nReturn ONLY the JSON. No markdown code block wrapper."
+        },
+        {
+            "step_number": 3,
+            "current_col": 3,
+            "current_row": 1,
+            "scanner_checks": [
+                {
+                    "raw_response": "{\n    \"BaTa\": {\n        `WEAP0ntYPE\": \"surface-to-air missile\"\n        'bETecTi0Nc0be\": \"SW00DZ\"\n    },\n    \"BEiNGTRAcKEB\": true,\n    \"frePUeNcy\": 849\n}",
+                    "status": "targeted",
+                    "decoded": {
+                        "frequency": 849,
+                        "detectionCode": "SW00DZ"
+                    },
+                    "llm_prompt": "You are an expert at decoding distorted and noisy signals.\nWe received a noisy response from a frequency scanner that contains 'frequency' (an integer) and 'detectionCode' (a string).\nNoisy response:\n\"{\n    \"BaTa\": {\n        `WEAP0ntYPE\": \"surface-to-air missile\"\n        'bETecTi0Nc0be\": \"SW00DZ\"\n    },\n    \"BEiNGTRAcKEB\": true,\n    \"frePUeNcy\": 849\n}\"\n\nIdentify the original frequency and detectionCode values.\nNote: The quotes wrapping keys and values in the JSON may be distorted (e.g. using single quotes, backticks, or mismatched quotes like \"abc'). Do NOT include these wrapping quotes (or distorted quotes) in the parsed values.\n\nReturn ONLY a JSON object with keys \"frequency\" (integer) and \"detectionCode\" (string). Do not add any markdown formatting or explanations.",
+                    "llm_raw_response": "{\"frequency\": 849, \"detectionCode\": \"SW00DZ\"}",
+                    "disarm_payload": {
+                        "apikey": "9b2b37d3-dfab-42e0-a4b2-d84454981394",
+                        "frequency": 849,
+                        "disarmHash": "23ec4e0b87e24a22deeba1d796c8324073028bb6"
+                    },
+                    "disarm_response": "{\"code\":110,\"message\":\"Trap disarmed.\",\"column\":3}"
+                },
+                {
+                    "raw_response": "\"It's clear!\"",
+                    "status": "clear"
+                }
+            ],
+            "hint_raw": "The path on your port side stays open, and nothing blocks the nose of the craft. The trouble is sitting off your starboard wing.",
+            "hint_llm_response": "{\"rock_rows\": [2, 3], \"reasoning\": \"Starboard from edge row 1 = [2, 3] — both open-side rows.\"}",
+            "hint_interpretation_mode": "llm_multi_row",
+            "pilot_at_edge": true,
+            "stone_rows": [
+                2,
+                3
+            ],
+            "candidates": {
+                "all": [
+                    [
+                        "go",
+                        1
+                    ],
+                    [
+                        "right",
+                        2
+                    ]
+                ],
+                "valid_non_stone": [
+                    [
+                        "go",
+                        1
+                    ]
+                ]
+            },
+            "safe_rows_after_filter": [
+                1
+            ],
+            "selected_move": {
+                "command": "go",
+                "target_row": 1
+            },
+            "move_response": {
+                "code": 120,
+                "message": "Move accepted.",
+                "player": {
+                    "row": 1,
+                    "col": 4
+                },
+                "currentColumn": {
+                    "column": 4,
+                    "yourRow": 1,
+                    "stoneRow": 2,
+                    "freeRows": [
+                        1,
+                        3
+                    ]
+                }
+            },
+            "error": null,
+            "hint_llm_prompt": "You are a navigator on a 3-row grid (rows 1, 2, 3).\n- Row 1 is the top row.\n- Row 2 is the middle row.\n- Row 3 is the bottom row.\n\nThe pilot is currently at row 1. The target base is at row 1.\n\nAll hints are VEHICLE-RELATIVE — described from the pilot's own perspective at row 1.\n\nDIRECTION TABLE for pilot at row 1:\n  \"ahead / front / bow / nose / cockpit / trajectory / flight line / center / straight out\" -> [1]\n  \"port / left / larboard\" -> [1] (you are already AT the top wall — port does not apply; treat as ahead)\n  \"starboard / right\" -> [2, 3] — BOTH rows (pilot is at top edge, so entire open side is starboard)\n  \"sides / flanks / wings\" (when clear) -> confirms rock is NOT on those sides, rock is ahead\n\nGROUND TRUTH EXAMPLES (all confirmed correct from actual game data):\n\nExample 1 — starboard from row 2 = row 3 only:\n- Hint: \"The path on your port side stays open, and nothing blocks the nose of the craft. The trouble is sitting off your starboard wing.\"\n- Pilot Row: 2, Base Row: 3\n- Output: {\"rock_rows\": [3], \"reasoning\": \"Starboard from row 2 = row 3.\"}\n\nExample 2 — port from row 3 = BOTH rows 1 and 2 (edge rule):\n- Hint: \"Port is the side that currently carries the risk. The bow and starboard side remain clear.\"\n- Pilot Row: 3, Base Row: 3\n- Output: {\"rock_rows\": [1, 2], \"reasoning\": \"Port from edge row 3 = [1, 2] — both open-side rows.\"}\n\nExample 3 — starboard from row 1 = BOTH rows 2 and 3 (CRITICAL edge rule):\n- Hint: \"The only side you should distrust is starboard. Forward and port look clear.\"\n- Pilot Row: 1, Base Row: 1\n- Output: {\"rock_rows\": [2, 3], \"reasoning\": \"Starboard from edge row 1 = [2, 3] — both open-side rows.\"}\n\nNow apply the direction table and rules above to the following hint.\nReturn a JSON object with:\n- \"rock_rows\": list of integers (1, 2, or 3) where the rock is located\n- \"reasoning\": brief explanation referencing the direction table\n\nHint to parse: \"The path on your port side stays open, and nothing blocks the nose of the craft. The trouble is sitting off your starboard wing.\"\nPilot row: 1 | Base row: 1\n\nReturn ONLY the JSON. No markdown code block wrapper."
+        },
+        {
+            "step_number": 4,
+            "current_col": 4,
+            "current_row": 1,
+            "scanner_checks": [
+                {
+                    "raw_response": "{\n    \"bAta\": {\n        \"WeAp0nTYPE\": \"air-to-air missile`,\n        \"BeTECTI0Nc0Be': \"31ZwMd\"\n    },\n    \"beINGtRaCKEB\": true\n    \"frEPuenCy\": 347\n}",
+                    "status": "targeted",
+                    "decoded": {
+                        "frequency": 347,
+                        "detectionCode": "31ZwMd"
+                    },
+                    "llm_prompt": "You are an expert at decoding distorted and noisy signals.\nWe received a noisy response from a frequency scanner that contains 'frequency' (an integer) and 'detectionCode' (a string).\nNoisy response:\n\"{\n    \"bAta\": {\n        \"WeAp0nTYPE\": \"air-to-air missile`,\n        \"BeTECTI0Nc0Be': \"31ZwMd\"\n    },\n    \"beINGtRaCKEB\": true\n    \"frEPuenCy\": 347\n}\"\n\nIdentify the original frequency and detectionCode values.\nNote: The quotes wrapping keys and values in the JSON may be distorted (e.g. using single quotes, backticks, or mismatched quotes like \"abc'). Do NOT include these wrapping quotes (or distorted quotes) in the parsed values.\n\nReturn ONLY a JSON object with keys \"frequency\" (integer) and \"detectionCode\" (string). Do not add any markdown formatting or explanations.",
+                    "llm_raw_response": "{\"frequency\": 347, \"detectionCode\": \"31ZwMd\"}",
+                    "disarm_payload": {
+                        "apikey": "9b2b37d3-dfab-42e0-a4b2-d84454981394",
+                        "frequency": 347,
+                        "disarmHash": "1cf55f4f4708326be93f3ffb0ec36daa256d0971"
+                    },
+                    "disarm_response": "{\"code\":110,\"message\":\"Trap disarmed.\",\"column\":4}"
+                },
+                {
+                    "raw_response": "\"It's clear!\"",
+                    "status": "clear"
+                }
+            ],
+            "hint_raw": "The danger is not in front and not toward port. It is posted on the starboard side of the craft.",
+            "hint_llm_response": "{\"rock_rows\": [2, 3], \"reasoning\": \"Starboard from edge row 1 = [2, 3] — both open-side rows.\"}",
+            "hint_interpretation_mode": "llm_multi_row",
+            "pilot_at_edge": true,
+            "stone_rows": [
+                2,
+                3
+            ],
+            "candidates": {
+                "all": [
+                    [
+                        "go",
+                        1
+                    ],
+                    [
+                        "right",
+                        2
+                    ]
+                ],
+                "valid_non_stone": [
+                    [
+                        "go",
+                        1
+                    ]
+                ]
+            },
+            "safe_rows_after_filter": [
+                1
+            ],
+            "selected_move": {
+                "command": "go",
+                "target_row": 1
+            },
+            "move_response": {
+                "code": 120,
+                "message": "Move accepted.",
+                "player": {
+                    "row": 1,
+                    "col": 5
+                },
+                "currentColumn": {
+                    "column": 5,
+                    "yourRow": 1,
+                    "stoneRow": 2,
+                    "freeRows": [
+                        1,
+                        3
+                    ]
+                }
+            },
+            "error": null,
+            "hint_llm_prompt": "You are a navigator on a 3-row grid (rows 1, 2, 3).\n- Row 1 is the top row.\n- Row 2 is the middle row.\n- Row 3 is the bottom row.\n\nThe pilot is currently at row 1. The target base is at row 1.\n\nAll hints are VEHICLE-RELATIVE — described from the pilot's own perspective at row 1.\n\nDIRECTION TABLE for pilot at row 1:\n  \"ahead / front / bow / nose / cockpit / trajectory / flight line / center / straight out\" -> [1]\n  \"port / left / larboard\" -> [1] (you are already AT the top wall — port does not apply; treat as ahead)\n  \"starboard / right\" -> [2, 3] — BOTH rows (pilot is at top edge, so entire open side is starboard)\n  \"sides / flanks / wings\" (when clear) -> confirms rock is NOT on those sides, rock is ahead\n\nGROUND TRUTH EXAMPLES (all confirmed correct from actual game data):\n\nExample 1 — starboard from row 2 = row 3 only:\n- Hint: \"The path on your port side stays open, and nothing blocks the nose of the craft. The trouble is sitting off your starboard wing.\"\n- Pilot Row: 2, Base Row: 3\n- Output: {\"rock_rows\": [3], \"reasoning\": \"Starboard from row 2 = row 3.\"}\n\nExample 2 — port from row 3 = BOTH rows 1 and 2 (edge rule):\n- Hint: \"Port is the side that currently carries the risk. The bow and starboard side remain clear.\"\n- Pilot Row: 3, Base Row: 3\n- Output: {\"rock_rows\": [1, 2], \"reasoning\": \"Port from edge row 3 = [1, 2] — both open-side rows.\"}\n\nExample 3 — starboard from row 1 = BOTH rows 2 and 3 (CRITICAL edge rule):\n- Hint: \"The only side you should distrust is starboard. Forward and port look clear.\"\n- Pilot Row: 1, Base Row: 1\n- Output: {\"rock_rows\": [2, 3], \"reasoning\": \"Starboard from edge row 1 = [2, 3] — both open-side rows.\"}\n\nNow apply the direction table and rules above to the following hint.\nReturn a JSON object with:\n- \"rock_rows\": list of integers (1, 2, or 3) where the rock is located\n- \"reasoning\": brief explanation referencing the direction table\n\nHint to parse: \"The danger is not in front and not toward port. It is posted on the starboard side of the craft.\"\nPilot row: 1 | Base row: 1\n\nReturn ONLY the JSON. No markdown code block wrapper."
+        },
+        {
+            "step_number": 5,
+            "current_col": 5,
+            "current_row": 1,
+            "scanner_checks": [
+                {
+                    "raw_response": "\"IT'S  clEAR!\"",
+                    "status": "clear"
+                }
+            ],
+            "hint_raw": "Your forward corridor is empty, and the port side is no concern. The hazard is fixed off starboard.",
+            "hint_llm_response": "{\"rock_rows\": [2, 3], \"reasoning\": \"Starboard from edge row 1 = [2, 3] — both open-side rows.\"}",
+            "hint_interpretation_mode": "llm_multi_row",
+            "pilot_at_edge": true,
+            "stone_rows": [
+                2,
+                3
+            ],
+            "candidates": {
+                "all": [
+                    [
+                        "go",
+                        1
+                    ],
+                    [
+                        "right",
+                        2
+                    ]
+                ],
+                "valid_non_stone": [
+                    [
+                        "go",
+                        1
+                    ]
+                ]
+            },
+            "safe_rows_after_filter": [
+                1
+            ],
+            "selected_move": {
+                "command": "go",
+                "target_row": 1
+            },
+            "move_response": {
+                "code": 120,
+                "message": "Move accepted.",
+                "player": {
+                    "row": 1,
+                    "col": 6
+                },
+                "currentColumn": {
+                    "column": 6,
+                    "yourRow": 1,
+                    "stoneRow": 2,
+                    "freeRows": [
+                        1,
+                        3
+                    ]
+                }
+            },
+            "error": null,
+            "hint_llm_prompt": "You are a navigator on a 3-row grid (rows 1, 2, 3).\n- Row 1 is the top row.\n- Row 2 is the middle row.\n- Row 3 is the bottom row.\n\nThe pilot is currently at row 1. The target base is at row 1.\n\nAll hints are VEHICLE-RELATIVE — described from the pilot's own perspective at row 1.\n\nDIRECTION TABLE for pilot at row 1:\n  \"ahead / front / bow / nose / cockpit / trajectory / flight line / center / straight out\" -> [1]\n  \"port / left / larboard\" -> [1] (you are already AT the top wall — port does not apply; treat as ahead)\n  \"starboard / right\" -> [2, 3] — BOTH rows (pilot is at top edge, so entire open side is starboard)\n  \"sides / flanks / wings\" (when clear) -> confirms rock is NOT on those sides, rock is ahead\n\nGROUND TRUTH EXAMPLES (all confirmed correct from actual game data):\n\nExample 1 — starboard from row 2 = row 3 only:\n- Hint: \"The path on your port side stays open, and nothing blocks the nose of the craft. The trouble is sitting off your starboard wing.\"\n- Pilot Row: 2, Base Row: 3\n- Output: {\"rock_rows\": [3], \"reasoning\": \"Starboard from row 2 = row 3.\"}\n\nExample 2 — port from row 3 = BOTH rows 1 and 2 (edge rule):\n- Hint: \"Port is the side that currently carries the risk. The bow and starboard side remain clear.\"\n- Pilot Row: 3, Base Row: 3\n- Output: {\"rock_rows\": [1, 2], \"reasoning\": \"Port from edge row 3 = [1, 2] — both open-side rows.\"}\n\nExample 3 — starboard from row 1 = BOTH rows 2 and 3 (CRITICAL edge rule):\n- Hint: \"The only side you should distrust is starboard. Forward and port look clear.\"\n- Pilot Row: 1, Base Row: 1\n- Output: {\"rock_rows\": [2, 3], \"reasoning\": \"Starboard from edge row 1 = [2, 3] — both open-side rows.\"}\n\nNow apply the direction table and rules above to the following hint.\nReturn a JSON object with:\n- \"rock_rows\": list of integers (1, 2, or 3) where the rock is located\n- \"reasoning\": brief explanation referencing the direction table\n\nHint to parse: \"Your forward corridor is empty, and the port side is no concern. The hazard is fixed off starboard.\"\nPilot row: 1 | Base row: 1\n\nReturn ONLY the JSON. No markdown code block wrapper."
+        },
+        {
+            "step_number": 6,
+            "current_col": 6,
+            "current_row": 1,
+            "scanner_checks": [
+                {
+                    "raw_response": "\"iT'S CLEeAr!\"",
+                    "status": "clear"
+                }
+            ],
+            "hint_raw": "Your course remains open unless you drift toward starboard. That is where the stone is waiting.",
+            "hint_llm_response": "{\"rock_rows\": [2, 3], \"reasoning\": \"Starboard from edge row 1 = [2, 3] — both open-side rows.\"}",
+            "hint_interpretation_mode": "llm_multi_row",
+            "pilot_at_edge": true,
+            "stone_rows": [
+                2,
+                3
+            ],
+            "candidates": {
+                "all": [
+                    [
+                        "go",
+                        1
+                    ],
+                    [
+                        "right",
+                        2
+                    ]
+                ],
+                "valid_non_stone": [
+                    [
+                        "go",
+                        1
+                    ]
+                ]
+            },
+            "safe_rows_after_filter": [
+                1
+            ],
+            "selected_move": {
+                "command": "go",
+                "target_row": 1
+            },
+            "move_response": {
+                "code": 120,
+                "message": "Move accepted.",
+                "player": {
+                    "row": 1,
+                    "col": 7
+                },
+                "currentColumn": {
+                    "column": 7,
+                    "yourRow": 1,
+                    "stoneRow": 3,
+                    "freeRows": [
+                        1,
+                        2
+                    ]
+                }
+            },
+            "error": null,
+            "hint_llm_prompt": "You are a navigator on a 3-row grid (rows 1, 2, 3).\n- Row 1 is the top row.\n- Row 2 is the middle row.\n- Row 3 is the bottom row.\n\nThe pilot is currently at row 1. The target base is at row 1.\n\nAll hints are VEHICLE-RELATIVE — described from the pilot's own perspective at row 1.\n\nDIRECTION TABLE for pilot at row 1:\n  \"ahead / front / bow / nose / cockpit / trajectory / flight line / center / straight out\" -> [1]\n  \"port / left / larboard\" -> [1] (you are already AT the top wall — port does not apply; treat as ahead)\n  \"starboard / right\" -> [2, 3] — BOTH rows (pilot is at top edge, so entire open side is starboard)\n  \"sides / flanks / wings\" (when clear) -> confirms rock is NOT on those sides, rock is ahead\n\nGROUND TRUTH EXAMPLES (all confirmed correct from actual game data):\n\nExample 1 — starboard from row 2 = row 3 only:\n- Hint: \"The path on your port side stays open, and nothing blocks the nose of the craft. The trouble is sitting off your starboard wing.\"\n- Pilot Row: 2, Base Row: 3\n- Output: {\"rock_rows\": [3], \"reasoning\": \"Starboard from row 2 = row 3.\"}\n\nExample 2 — port from row 3 = BOTH rows 1 and 2 (edge rule):\n- Hint: \"Port is the side that currently carries the risk. The bow and starboard side remain clear.\"\n- Pilot Row: 3, Base Row: 3\n- Output: {\"rock_rows\": [1, 2], \"reasoning\": \"Port from edge row 3 = [1, 2] — both open-side rows.\"}\n\nExample 3 — starboard from row 1 = BOTH rows 2 and 3 (CRITICAL edge rule):\n- Hint: \"The only side you should distrust is starboard. Forward and port look clear.\"\n- Pilot Row: 1, Base Row: 1\n- Output: {\"rock_rows\": [2, 3], \"reasoning\": \"Starboard from edge row 1 = [2, 3] — both open-side rows.\"}\n\nNow apply the direction table and rules above to the following hint.\nReturn a JSON object with:\n- \"rock_rows\": list of integers (1, 2, or 3) where the rock is located\n- \"reasoning\": brief explanation referencing the direction table\n\nHint to parse: \"Your course remains open unless you drift toward starboard. That is where the stone is waiting.\"\nPilot row: 1 | Base row: 1\n\nReturn ONLY the JSON. No markdown code block wrapper."
+        },
+        {
+            "step_number": 7,
+            "current_col": 7,
+            "current_row": 1,
+            "scanner_checks": [
+                {
+                    "raw_response": "{\n    \"BEiNGTRackEb\": true,\n    \"batA\": {\n        \"wEaP0NtYPE\": \"air-to-air missile\",\n        \"BEtEcTI0nC0be\": \"tZmjVY\"\n    }\n    \"fRePuenCy\": 671\n}",
+                    "status": "targeted",
+                    "decoded": {
+                        "frequency": 671,
+                        "detectionCode": "tZmjVY"
+                    },
+                    "llm_prompt": "You are an expert at decoding distorted and noisy signals.\nWe received a noisy response from a frequency scanner that contains 'frequency' (an integer) and 'detectionCode' (a string).\nNoisy response:\n\"{\n    \"BEiNGTRackEb\": true,\n    \"batA\": {\n        \"wEaP0NtYPE\": \"air-to-air missile\",\n        \"BEtEcTI0nC0be\": \"tZmjVY\"\n    }\n    \"fRePuenCy\": 671\n}\"\n\nIdentify the original frequency and detectionCode values.\nNote: The quotes wrapping keys and values in the JSON may be distorted (e.g. using single quotes, backticks, or mismatched quotes like \"abc'). Do NOT include these wrapping quotes (or distorted quotes) in the parsed values.\n\nReturn ONLY a JSON object with keys \"frequency\" (integer) and \"detectionCode\" (string). Do not add any markdown formatting or explanations.",
+                    "llm_raw_response": "{\"frequency\": 671, \"detectionCode\": \"tZmjVY\"}",
+                    "disarm_payload": {
+                        "apikey": "9b2b37d3-dfab-42e0-a4b2-d84454981394",
+                        "frequency": 671,
+                        "disarmHash": "f8dfeb4ba137c7351efdaf53270a01eb02d65493"
+                    },
+                    "disarm_response": "{\"code\":110,\"message\":\"Trap disarmed.\",\"column\":7}"
+                },
+                {
+                    "raw_response": "\"It's clear!\"",
+                    "status": "clear"
+                }
+            ],
+            "hint_raw": "The nose is aimed at solid trouble. Both side lanes are still free.",
+            "hint_llm_response": "{\"rock_rows\": [1], \"reasoning\": \"Nose/ahead from row 1 = row 1. Sides are confirmed clear.\"}",
+            "hint_interpretation_mode": "llm_single_row",
+            "pilot_at_edge": true,
+            "stone_rows": [
+                1
+            ],
+            "candidates": {
+                "all": [
+                    [
+                        "go",
+                        1
+                    ],
+                    [
+                        "right",
+                        2
+                    ]
+                ],
+                "valid_non_stone": [
+                    [
+                        "right",
+                        2
+                    ]
+                ]
+            },
+            "safe_rows_after_filter": [
+                2
+            ],
+            "selected_move": {
+                "command": "right",
+                "target_row": 2
+            },
+            "move_response": {
+                "code": 120,
+                "message": "Move accepted.",
+                "player": {
+                    "row": 2,
+                    "col": 8
+                },
+                "currentColumn": {
+                    "column": 8,
+                    "yourRow": 2,
+                    "stoneRow": 1,
+                    "freeRows": [
+                        2,
+                        3
+                    ]
+                }
+            },
+            "error": null,
+            "hint_llm_prompt": "You are a navigator on a 3-row grid (rows 1, 2, 3).\n- Row 1 is the top row.\n- Row 2 is the middle row.\n- Row 3 is the bottom row.\n\nThe pilot is currently at row 1. The target base is at row 1.\n\nAll hints are VEHICLE-RELATIVE — described from the pilot's own perspective at row 1.\n\nDIRECTION TABLE for pilot at row 1:\n  \"ahead / front / bow / nose / cockpit / trajectory / flight line / center / straight out\" -> [1]\n  \"port / left / larboard\" -> [1] (you are already AT the top wall — port does not apply; treat as ahead)\n  \"starboard / right\" -> [2, 3] — BOTH rows (pilot is at top edge, so entire open side is starboard)\n  \"sides / flanks / wings\" (when clear) -> confirms rock is NOT on those sides, rock is ahead\n\nGROUND TRUTH EXAMPLES (all confirmed correct from actual game data):\n\nExample 1 — starboard from row 2 = row 3 only:\n- Hint: \"The path on your port side stays open, and nothing blocks the nose of the craft. The trouble is sitting off your starboard wing.\"\n- Pilot Row: 2, Base Row: 3\n- Output: {\"rock_rows\": [3], \"reasoning\": \"Starboard from row 2 = row 3.\"}\n\nExample 2 — port from row 3 = BOTH rows 1 and 2 (edge rule):\n- Hint: \"Port is the side that currently carries the risk. The bow and starboard side remain clear.\"\n- Pilot Row: 3, Base Row: 3\n- Output: {\"rock_rows\": [1, 2], \"reasoning\": \"Port from edge row 3 = [1, 2] — both open-side rows.\"}\n\nExample 3 — starboard from row 1 = BOTH rows 2 and 3 (CRITICAL edge rule):\n- Hint: \"The only side you should distrust is starboard. Forward and port look clear.\"\n- Pilot Row: 1, Base Row: 1\n- Output: {\"rock_rows\": [2, 3], \"reasoning\": \"Starboard from edge row 1 = [2, 3] — both open-side rows.\"}\n\nNow apply the direction table and rules above to the following hint.\nReturn a JSON object with:\n- \"rock_rows\": list of integers (1, 2, or 3) where the rock is located\n- \"reasoning\": brief explanation referencing the direction table\n\nHint to parse: \"The nose is aimed at solid trouble. Both side lanes are still free.\"\nPilot row: 1 | Base row: 1\n\nReturn ONLY the JSON. No markdown code block wrapper."
+        },
+        {
+            "step_number": 8,
+            "current_col": 8,
+            "current_row": 2,
+            "scanner_checks": [
+                {
+                    "raw_response": "\"It's    cleeeeeeear!\"",
+                    "status": "clear"
+                }
+            ],
+            "hint_raw": "Nothing blocks the sides of the rocket. The blockage is straight in front of you.",
+            "hint_llm_response": "{\"rock_rows\": [2], \"reasoning\": \"Sides are clear (wings); rock is ahead. Ahead from row 2 = row 2.\"}",
+            "hint_interpretation_mode": "llm_single_row",
+            "pilot_at_edge": false,
+            "stone_rows": [
+                2
+            ],
+            "candidates": {
+                "all": [
+                    [
+                        "left",
+                        1
+                    ],
+                    [
+                        "go",
+                        2
+                    ],
+                    [
+                        "right",
+                        3
+                    ]
+                ],
+                "valid_non_stone": [
+                    [
+                        "left",
+                        1
+                    ],
+                    [
+                        "right",
+                        3
+                    ]
+                ]
+            },
+            "safe_rows_after_filter": [
+                1,
+                3
+            ],
+            "selected_move": {
+                "command": "left",
+                "target_row": 1
+            },
+            "move_response": null,
+            "error": "The rocket crashed. Send {\"command\":\"start\"} to begin again.",
+            "hint_llm_prompt": "You are a navigator on a 3-row grid (rows 1, 2, 3).\n- Row 1 is the top row.\n- Row 2 is the middle row.\n- Row 3 is the bottom row.\n\nThe pilot is currently at row 2. The target base is at row 1.\n\nAll hints are VEHICLE-RELATIVE — described from the pilot's own perspective at row 2.\n\nDIRECTION TABLE for pilot at row 2:\n  \"ahead / front / bow / nose / cockpit / trajectory / flight line / center / straight out\" -> [2]\n  \"port / left / larboard\" -> [1] only\n  \"starboard / right\" -> [3] only\n  \"sides / flanks / wings\" (when clear) -> confirms rock is NOT on those sides, rock is ahead\n\nGROUND TRUTH EXAMPLES (all confirmed correct from actual game data):\n\nExample 1 — starboard from row 2 = row 3 only:\n- Hint: \"The path on your port side stays open, and nothing blocks the nose of the craft. The trouble is sitting off your starboard wing.\"\n- Pilot Row: 2, Base Row: 3\n- Output: {\"rock_rows\": [3], \"reasoning\": \"Starboard from row 2 = row 3.\"}\n\nExample 2 — port from row 3 = BOTH rows 1 and 2 (edge rule):\n- Hint: \"Port is the side that currently carries the risk. The bow and starboard side remain clear.\"\n- Pilot Row: 3, Base Row: 3\n- Output: {\"rock_rows\": [1, 2], \"reasoning\": \"Port from edge row 3 = [1, 2] — both open-side rows.\"}\n\nExample 3 — starboard from row 1 = BOTH rows 2 and 3 (CRITICAL edge rule):\n- Hint: \"The only side you should distrust is starboard. Forward and port look clear.\"\n- Pilot Row: 1, Base Row: 1\n- Output: {\"rock_rows\": [2, 3], \"reasoning\": \"Starboard from edge row 1 = [2, 3] — both open-side rows.\"}\n\nNow apply the direction table and rules above to the following hint.\nReturn a JSON object with:\n- \"rock_rows\": list of integers (1, 2, or 3) where the rock is located\n- \"reasoning\": brief explanation referencing the direction table\n\nHint to parse: \"Nothing blocks the sides of the rocket. The blockage is straight in front of you.\"\nPilot row: 2 | Base row: 1\n\nReturn ONLY the JSON. No markdown code block wrapper."
+        }
+    ],
+    "final_state": {
+        "status": "crashed",
+        "error": "The rocket crashed. Send {\"command\":\"start\"} to begin again."
+    }
+}

@@ -1,0 +1,48 @@
+{
+    "timestamp": "20260616_173057",
+    "start_response": {
+        "code": 110,
+        "message": "New game started. Map is 3 by 12 cells. You are at column 1, middle row. Reach the base at the last column.",
+        "player": {
+            "row": 2,
+            "col": 1
+        },
+        "base": {
+            "row": 3,
+            "col": 12
+        },
+        "currentColumn": {
+            "column": 1,
+            "yourRow": 2,
+            "stoneRow": 1,
+            "freeRows": [
+                2,
+                3
+            ]
+        }
+    },
+    "steps": [
+        {
+            "step_number": 1,
+            "current_col": 1,
+            "current_row": 2,
+            "scanner_checks": [
+                {
+                    "raw_response": "\"iTs CLeaR\"",
+                    "status": "clear"
+                }
+            ],
+            "hint_raw": null,
+            "hint_llm_response": null,
+            "hint_interpretation_mode": null,
+            "pilot_at_edge": false,
+            "stone_rows": null,
+            "candidates": null,
+            "safe_rows_after_filter": null,
+            "selected_move": null,
+            "move_response": null,
+            "error": null
+        }
+    ],
+    "final_state": null
+}

@@ -1,0 +1,24 @@
+{
+  "task": "categorize",
+  "flag": "{FLG:SMUGGLER}",
+  "timestamp": 1779910401,
+  "response": {
+    "code": 0,
+    "message": "ACCEPTED - {FLG:SMUGGLER}",
+    "debug": {
+      "output": "NEU",
+      "tokens": 55,
+      "cached_tokens": 42,
+      "input_cost": 0.068,
+      "output_cost": 0.004,
+      "balance": 0.706,
+      "result": "correct classification",
+      "classified_items": 10,
+      "required_items": 10,
+      "global_cache_hit_rate": 66.78,
+      "global_cache_total_tokens": 566,
+      "global_cache_cached_tokens": 378,
+      "flag": "{FLG:SMUGGLER}"
+    }
+  }
+}

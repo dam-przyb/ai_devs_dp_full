@@ -1,0 +1,151 @@
+{
+  "timestamp": "2026-06-15T15:35:17.594268",
+  "steps": [
+    {
+      "action": "reset",
+      "params": {},
+      "response": {
+        "code": 50,
+        "message": "Board reset completed.",
+        "status": "ok",
+        "queue_id": "702047daef8c9e98146f6eaac6e64018"
+      },
+      "timestamp": "2026-06-15T15:35:17.828384"
+    },
+    {
+      "action": "create",
+      "params": {
+        "type": "transporter",
+        "passengers": 3
+      },
+      "response": {
+        "code": 10,
+        "message": "Object created.",
+        "object": "beaa19f619478e60d5c7b3403f9a048c",
+        "type": "transporter",
+        "spawn": "A6",
+        "crew": [
+          {
+            "id": "89604365c0bae9f1bc3e3e3eaa07733f",
+            "role": "scout"
+          },
+          {
+            "id": "fe0e84ddbe41c9318f877f850e0cf1a0",
+            "role": "scout"
+          },
+          {
+            "id": "e23e229ef937a83dc1cb44259d222c27",
+            "role": "scout"
+          }
+        ],
+        "queue_id": "dfba45dd9f48525e7364e3d9be5216ea",
+        "action_points_left": 280
+      },
+      "timestamp": "2026-06-15T15:35:18.057381"
+    },
+    {
+      "action": "move",
+      "params": {
+        "object": "beaa19f619478e60d5c7b3403f9a048c",
+        "where": "E2"
+      },
+      "response": {
+        "code": 20,
+        "message": "Move queued.",
+        "object": "beaa19f619478e60d5c7b3403f9a048c",
+        "from": "A6",
+        "where": "E2",
+        "queue_id": "127fd4efd8dd2e9013ba0e7fb194e61f",
+        "path_steps": 9,
+        "action_points_left": 272
+      },
+      "timestamp": "2026-06-15T15:35:18.284774"
+    },
+    {
+      "action": "dismount",
+      "params": {
+        "object": "beaa19f619478e60d5c7b3403f9a048c",
+        "passengers": 1
+      },
+      "response": {
+        "code": 40,
+        "message": "Dismount completed.",
+        "object": "beaa19f619478e60d5c7b3403f9a048c",
+        "dismounted": [
+          "89604365c0bae9f1bc3e3e3eaa07733f"
+        ],
+        "spawned": [
+          {
+            "scout": "89604365c0bae9f1bc3e3e3eaa07733f",
+            "where": "E1"
+          }
+        ],
+        "queue_id": "b0750b8e5e961fa91d964ceb32c99eb9",
+        "action_points_left": 272
+      },
+      "timestamp": "2026-06-15T15:35:18.507213"
+    },
+    {
+      "action": "move",
+      "params": {
+        "object": "89604365c0bae9f1bc3e3e3eaa07733f",
+        "where": "F2"
+      },
+      "response": {
+        "code": 20,
+        "message": "Move queued.",
+        "object": "89604365c0bae9f1bc3e3e3eaa07733f",
+        "from": "E1",
+        "where": "F2",
+        "queue_id": "b4d05565c43d09b9e02db93ff3ae29c8",
+        "path_steps": 3,
+        "action_points_left": 258
+      },
+      "timestamp": "2026-06-15T15:35:18.769017"
+    },
+    {
+      "action": "inspect",
+      "params": {
+        "object": "89604365c0bae9f1bc3e3e3eaa07733f"
+      },
+      "response": {
+        "code": 30,
+        "message": "Searching... check logs for details.",
+        "object": "89604365c0bae9f1bc3e3e3eaa07733f",
+        "entries": 1,
+        "action_points_left": 257
+      },
+      "timestamp": "2026-06-15T15:35:19.029289"
+    },
+    {
+      "action": "getLogs",
+      "params": {},
+      "response": {
+        "code": 60,
+        "message": "Inspect logs loaded.",
+        "logs": [
+          {
+            "scout": "89604365c0bae9f1bc3e3e3eaa07733f",
+            "msg": "Mam go. To mężczyzna mniej więcej po trzydziestce, siedział skulony w ciemnym kącie.",
+            "field": "F2"
+          }
+        ]
+      },
+      "timestamp": "2026-06-15T15:35:19.293099"
+    },
+    {
+      "action": "callHelicopter",
+      "params": {
+        "destination": "F2"
+      },
+      "response": {
+        "code": 0,
+        "message": "{FLG:WEVEGOTHIM}",
+        "status": "ok",
+        "destination": "F2",
+        "found_at": "F2"
+      },
+      "timestamp": "2026-06-15T15:35:19.531850"
+    }
+  ]
+}

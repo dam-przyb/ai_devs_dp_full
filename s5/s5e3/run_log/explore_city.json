@@ -1,0 +1,15 @@
+{
+    "grep_safe_1": {
+        "error": "400 Client Error: Bad Request for url: https://hub.ag3nts.org/verify"
+    },
+    "grep_safe_2": {
+        "code": 100,
+        "message": "Command executed.",
+        "output": "    {\n        \"location_id\": 170,\n        \"name\": \"Timi\\u0219oara\"\n    },\n    {\n--\n    },\n    {\n        \"location_id\": 219,\n        \"name\": \"Grudzi\\u0105dz\"\n    },\n"
+    },
+    "python_safe": {
+        "code": 100,
+        "message": "Command executed.",
+        "output": "sh: python3: not found\nsh: python: not found\n"
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "list_root": {
+        "code": 100,
+        "message": "Command executed.",
+        "output": "total 60\ndrwxr-xr-x    1 root     root          4096 Apr  4 13:00 .\ndrwxr-xr-x    1 root     root          4096 Apr  4 13:00 ..\n-rwxr-xr-x    1 root     root             0 Apr  4 13:00 .dockerenv\ndrwxr-xr-x    1 root     root          4096 Apr  4 13:00 bin\ndrwxr-xr-x    2 root     root          4096 Apr  4 12:48 data\ndrwxr-xr-x    5 root     root           540 May 31 13:39 dev\ndrwxr-xr-x    1 root     root          4096 Apr  4 13:00 etc\ndrwxr-xr-x    2 root     root          4096 Jan 27 21:37 home\ndrwxr-xr-x    1 root     root          4096 Apr  4 13:00 lib\ndrwxr-xr-x    5 root     root          4096 Jan 27 21:37 media\ndrwxr-xr-x    2 root     root          4096 Jan 27 21:37 mnt\ndrwxr-xr-x    2 root     root          4096 Jan 27 21:37 opt\ndr-xr-xr-x  436 root     root             0 Apr  4 13:00 proc\ndrwx------    2 root     root          4096 Jan 27 21:37 root\ndrwxr-xr-x    2 root     root            40 Apr  4 13:00 run\ndrwxr-xr-x    1 root     root          4096 Apr  4 13:00 sbin\ndrwxr-xr-x    2 root     root          4096 Jan 27 21:37 srv\ndr-xr-xr-x   13 root     root             0 Apr  4 13:00 sys\ndrwxrwxrwt    2 root     root            40 Apr  4 13:00 tmp\ndrwxr-xr-x    1 root     root          4096 Jan 27 21:37 usr\ndrwxr-xr-x    1 root     root          4096 Apr  4 13:00 var\n"
+    },
+    "list_data": {
+        "code": 100,
+        "message": "Command executed.",
+        "output": "total 884\ndrwxr-xr-x    2 root     root          4096 Apr  4 12:48 .\ndrwxr-xr-x    1 root     root          4096 Apr  4 13:00 ..\n-rw-r--r--    1 root     root        497655 Apr  4 12:48 gps.json\n-rw-r--r--    1 root     root         15444 Apr  4 10:04 locations.json\n-rw-r--r--    1 root     root        376836 Apr  4 12:51 time_logs.csv\n"
+    },
+    "find_files_data": {
+        "code": 100,
+        "message": "Command executed.",
+        "output": "/data/locations.json\n/data/gps.json\n/data/time_logs.csv\n"
+    }
+}

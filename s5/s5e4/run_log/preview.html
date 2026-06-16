@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Going There - Rocket Map</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;600;700&family=DM+Mono:wght@400;500&display=swap');
+
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-surface: #161616;
+            --border: #3a3a3a;
+            --border-strong: #4a4a4a;
+            --text-primary: #ffffff;
+            --text-muted: #888888;
+            --accent: #75f86f;
+            --accent-dim: rgba(117, 248, 111, 0.12);
+            --error: #ff8080;
+            --warning: #f78c6c;
+            --cell-size: clamp(36px, 6vw, 64px);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Lexend Deca', system-ui, sans-serif;
+            background: var(--bg-primary);
+            background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 24px 24px;
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 48px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .title {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+            text-align: center;
+        }
+
+        .card {
+            width: min(100%, 960px);
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .status-bar {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .pill {
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            padding: 4px 10px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .pill--active {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .pill--error {
+            border-color: var(--error);
+            color: var(--error);
+        }
+
+        .pill--success {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-dim);
+        }
+
+        .grid-wrap {
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+        }
+
+        .grid-table {
+            border-collapse: collapse;
+            table-layout: fixed;
+            width: 100%;
+            min-width: calc(var(--cell-size) * 13);
+        }
+
+        .grid-table th,
+        .grid-table td {
+            border: 1px solid var(--border);
+            width: var(--cell-size);
+            height: var(--cell-size);
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .grid-table th {
+            font-family: 'DM Mono', monospace;
+            font-size: 12px;
+            color: var(--text-muted);
+            background: #111111;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            position: relative;
+            overflow: visible;
+        }
+
+        .corner {
+            background: #111111;
+        }
+
+        .cell {
+            position: relative;
+            transition: background 0.2s ease, border-color 0.2s ease;
+        }
+
+        .cell--free {
+            background: #1a2a1a;
+        }
+
+        .cell--stone {
+            background: #1c1412;
+        }
+
+        .cell--fog {
+            background: #141922;
+        }
+
+        .cell--player {
+            background: linear-gradient(135deg, var(--accent-dim), rgba(117, 248, 111, 0.06));
+            border-color: var(--accent) !important;
+            box-shadow: inset 0 0 12px var(--accent-dim);
+        }
+
+        .cell--scanner-pulse::before,
+        .cell--scanner-pulse::after {
+            content: '';
+            position: absolute;
+            inset: 6px;
+            border: 2px solid rgba(117, 248, 111, 0.85);
+            border-radius: 999px;
+            pointer-events: none;
+            animation: scanner-ripple 0.8s ease-out forwards;
+        }
+
+        .cell--scanner-pulse::after {
+            animation-delay: 0.12s;
+            border-color: rgba(117, 248, 111, 0.55);
+        }
+
+        .th--scanner-pulse::before,
+        .th--scanner-pulse::after {
+            content: '';
+            position: absolute;
+            inset: 6px;
+            border: 2px solid rgba(117, 248, 111, 0.85);
+            border-radius: 999px;
+            pointer-events: none;
+            animation: scanner-ripple 1s ease-out forwards;
+        }
+
+        .th--scanner-pulse::after {
+            animation-delay: 0.12s;
+            border-color: rgba(117, 248, 111, 0.55);
+        }
+
+        .th-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 1.5em;
+        }
+
+        .th--alert-blink {
+            animation: header-alert-blink 0.85s ease-in-out 1;
+            color: #ffd7d7 !important;
+            border-color: #ff6b6b !important;
+            box-shadow: inset 0 0 0 1px rgba(255, 107, 107, 0.35);
+        }
+
+        .cell--cave {
+            position: relative;
+        }
+
+        .cell--cave::after {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            border: 2px dashed var(--warning);
+            border-radius: 3px;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .cell--player.cell--cave::after {
+            border-color: var(--accent);
+            opacity: 1;
+        }
+
+        .cell-icon {
+            font-size: clamp(16px, 2.5vw, 28px);
+            line-height: 1;
+            filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.6));
+        }
+
+        .legend-emoji {
+            font-size: 18px;
+            line-height: 1;
+            width: 18px;
+            height: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .legend-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 8px 12px;
+            background: #111111;
+        }
+
+        .legend-swatch {
+            width: 18px;
+            height: 18px;
+            border-radius: 3px;
+            border: 1px solid var(--border-strong);
+        }
+
+        .legend-text {
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .swatch-free {
+            background: #1a2a1a;
+        }
+
+        .swatch-fog {
+            background: #141922;
+        }
+
+        .swatch-player {
+            background: var(--accent);
+        }
+
+        .swatch-cave {
+            background: transparent;
+            border: 2px dashed var(--warning);
+        }
+
+        .no-game {
+            text-align: center;
+            padding: 48px 24px;
+            color: var(--text-muted);
+            font-family: 'DM Mono', monospace;
+            font-size: 13px;
+        }
+
+        .overlay-wrap {
+            position: relative;
+        }
+
+        .overlay {
+            position: absolute;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+            padding: 24px;
+        }
+
+        .overlay.is-visible {
+            display: flex;
+        }
+
+        .overlay-msg {
+            font-family: 'DM Mono', monospace;
+            font-size: clamp(14px, 2vw, 22px);
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            padding: 16px 24px;
+            border-radius: 8px;
+            text-align: center;
+            white-space: pre-line;
+            max-width: min(90%, 520px);
+        }
+
+        .overlay-msg--crashed {
+            color: var(--error);
+            border: 1px solid var(--error);
+            background: rgba(16, 3, 3, 0.92);
+            box-shadow: 0 0 0 999px rgba(0, 0, 0, 0.5);
+        }
+
+        .overlay-msg--finished {
+            color: #93ffab;
+            border: 1px solid #2bd85f;
+            background: rgba(3, 16, 7, 0.92);
+            box-shadow: 0 0 0 999px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(43, 216, 95, 0.32);
+        }
+
+        .overlay-msg--victory {
+            max-width: min(98vw, 760px);
+            padding: 28px 32px;
+        }
+
+        .victory-title {
+            font-size: clamp(16px, 2.4vw, 22px);
+            font-weight: 600;
+            color: #b8ffc8;
+            margin-bottom: 20px;
+            letter-spacing: 0.04em;
+        }
+
+        .victory-flag {
+            font-family: 'DM Mono', monospace;
+            font-size: clamp(18px, 3.2vw, 32px);
+            font-weight: 700;
+            line-height: 1.2;
+            color: #39ff14;
+            text-shadow:
+                0 0 20px rgba(57, 255, 20, 0.65),
+                0 0 40px rgba(57, 255, 20, 0.35);
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+        }
+
+        .dimmed .grid-wrap {
+            filter: brightness(0.35);
+            transition: filter 0.3s ease;
+        }
+
+        .pulse {
+            animation: pulse-glow 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                opacity: 0.7;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes scanner-ripple {
+            0% {
+                opacity: 0.95;
+                transform: scale(0.25);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(2.1);
+            }
+        }
+
+        @keyframes header-alert-blink {
+
+            0%,
+            100% {
+                background: #111111;
+                color: var(--text-muted);
+                box-shadow: none;
+            }
+
+            20%,
+            60% {
+                background: rgba(170, 15, 15, 0.95);
+                color: #fff3f3;
+                box-shadow:
+                    inset 0 0 0 1px rgba(255, 125, 125, 0.7),
+                    0 0 18px rgba(255, 80, 80, 0.45);
+            }
+
+            40%,
+            80% {
+                background: #111111;
+                color: #ffb3b3;
+                box-shadow: none;
+            }
+        }
+    </style>
+    <script src="https://cart.easy.tools/login.js?type=block&id=b34df704-20c1-4adb-8aa9-b454428726ea"></script>
+    <script>
+        !window._EC_HASH_10825c914cdc79311c67abfe0cce3019 && (location.href = "https://cart.easy.tools/r/b34df704-20c1-4adb-8aa9-b454428726ea");
+    </script>
+    <noscript>
+        <meta http-equiv="refresh" content="0;url=https://cart.easy.tools/r/b34df704-20c1-4adb-8aa9-b454428726ea">
+    </noscript>
+</head>
+
+<body>
+
+    <h1 class="title">S05E04 — Going There</h1>
+
+    <section class="card">
+        <div class="topbar">
+            <span class="subtitle">Rocket Map <span style="font-size:12px;color:var(--text-muted);font-weight:400;">(3 ×
+                    12)</span></span>
+            <div class="status-bar">
+                <span class="pill" id="status-pill">WAITING</span>
+                <span class="pill" id="pos-pill">—</span>
+            </div>
+        </div>
+
+        <div class="overlay-wrap" id="board-stage">
+            <div id="grid-container">
+                <div class="no-game" id="no-game-msg">No active game. Send <code>{"command":"start"}</code> to begin.
+                </div>
+            </div>
+            <div class="overlay" id="overlay" aria-hidden="true">
+                <span class="overlay-msg" id="overlay-msg"></span>
+            </div>
+        </div>
+
+        <div class="legend" aria-label="Legend">
+            <div class="legend-item">
+                <span class="legend-swatch swatch-free"></span>
+                <span class="legend-text">Free path</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-emoji" aria-hidden="true">&#x1F32B;&#xFE0F;</span>
+                <span class="legend-text">Fog of war</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-emoji" aria-hidden="true">&#x1F3D4;&#xFE0F;</span>
+                <span class="legend-text">Stone</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-emoji" aria-hidden="true">&#x1F680;</span>
+                <span class="legend-text">Rocket</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-swatch swatch-cave"></span>
+                <span class="legend-text">Cave / destination</span>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        (() => {
+            const POLL_MS = 2000;
+            const ANIMATION_STEP_MS = 400;
+            const APIKEY_STORAGE_KEY = 'mykey';
+
+            const gridContainer = document.getElementById('grid-container');
+            const noGameMsg = document.getElementById('no-game-msg');
+            const statusPill = document.getElementById('status-pill');
+            const posPill = document.getElementById('pos-pill');
+            const boardStage = document.getElementById('board-stage');
+            const overlay = document.getElementById('overlay');
+            const overlayMsg = document.getElementById('overlay-msg');
+
+            let fetchInFlight = false;
+            let prevSignature = '';
+            let lastEventId = 0;
+            let animationQueue = [];
+            let animationTimer = null;
+
+            const getStoredApiKey = () => String(
+                localStorage.getItem(APIKEY_STORAGE_KEY) || localStorage[APIKEY_STORAGE_KEY] || ''
+            ).trim();
+
+            /** Same flow as index.php updateStats(): /stats with EasyCart UUID, then localStorage mykey. */
+            const fetchApiKeyFromStats = async () => {
+                const uuid = typeof window._EC_USER_UUID === 'string' ? window._EC_USER_UUID.trim() : '';
+                if (!uuid) return '';
+                const resp = await fetch('/stats', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({ key: uuid }),
+                });
+                if (!resp.ok) throw new Error('HTTP ' + resp.status);
+                const data = await resp.json();
+                const key = typeof data.key === 'string' ? data.key.trim() : '';
+                if (!key) throw new Error('No key returned');
+                window.localStorage[APIKEY_STORAGE_KEY] = data.key;
+                return key;
+            };
+
+            const initApiKey = async () => {
+                const stored = getStoredApiKey();
+                if (stored) return stored;
+                try {
+                    return await fetchApiKeyFromStats();
+                } catch (e) {
+                    console.log('apikey fetch failed:', e);
+                    return '';
+                }
+            };
+
+            const setStatus = (text, variant) => {
+                statusPill.textContent = text;
+                statusPill.className = 'pill';
+                if (variant === 'active') statusPill.classList.add('pill--active');
+                else if (variant === 'error') statusPill.classList.add('pill--error');
+                else if (variant === 'success') statusPill.classList.add('pill--success');
+            };
+
+            const setOverlay = (visible, text, variant) => {
+                boardStage.classList.toggle('dimmed', visible);
+                overlay.classList.toggle('is-visible', visible);
+                overlay.setAttribute('aria-hidden', visible ? 'false' : 'true');
+                if (overlayMsg) {
+                    overlayMsg.textContent = text || '';
+                    overlayMsg.className = 'overlay-msg';
+                    if (variant === 'crashed') overlayMsg.classList.add('overlay-msg--crashed');
+                    else if (variant === 'finished') overlayMsg.classList.add('overlay-msg--finished');
+                }
+            };
+
+            /** Flaga z backendu (nie z JS); tylko textContent (XSS). */
+            const showVictoryOverlay = (flagText) => {
+                boardStage.classList.add('dimmed');
+                overlay.classList.add('is-visible');
+                overlay.setAttribute('aria-hidden', 'false');
+                if (!overlayMsg) return;
+                overlayMsg.className = 'overlay-msg overlay-msg--finished overlay-msg--victory';
+                overlayMsg.innerHTML = '';
+                const title = document.createElement('div');
+                title.className = 'victory-title';
+                title.textContent = 'Rocket reached the cave!';
+                const flagEl = document.createElement('div');
+                flagEl.className = 'victory-flag';
+                flagEl.textContent = flagText;
+                overlayMsg.appendChild(title);
+                overlayMsg.appendChild(flagEl);
+            };
+
+            const buildGrid = (
+                map,
+                playerRow,
+                playerCol,
+                caveRow,
+                crashed,
+                playerEffect,
+                headerEffectColumn,
+                headerEffect,
+                headerMarker,
+                disarmedTrapColumns
+            ) => {
+                const rows = map.length;
+                const cols = map[0].length;
+
+                let html = '<div class="grid-wrap"><table class="grid-table"><thead><tr><th class="corner"></th>';
+                for (let c = 0; c < cols; c++) {
+                    const isHeaderTarget = headerEffectColumn === c;
+                    const isDisarmedTrapColumn = Array.isArray(disarmedTrapColumns) && disarmedTrapColumns.includes(c);
+                    let headerClass = '';
+                    if (isHeaderTarget && headerEffect === 'scannerPulse') {
+                        headerClass = ' class="th--scanner-pulse"';
+                    } else if (isHeaderTarget && headerEffect === 'alertBlink') {
+                        headerClass = ' class="th--alert-blink"';
+                    }
+
+                    let headerText = String(c + 1);
+                    if (isHeaderTarget && headerMarker === 'satellite') {
+                        headerText = '<span class="th-icon">&#x1F4E1;</span>';
+                    } else if (isHeaderTarget && headerMarker === 'fire') {
+                        headerText = '<span class="th-icon">&#x1F525;</span>';
+                    } else if (isDisarmedTrapColumn) {
+                        headerText = '<span class="th-icon">&#x1F525;</span>';
+                    }
+                    html += '<th' + headerClass + '>' + headerText + '</th>';
+                }
+                html += '</tr></thead><tbody>';
+
+                for (let r = 0; r < rows; r++) {
+                    html += '<tr><th>' + (r + 1) + '</th>';
+                    for (let c = 0; c < cols; c++) {
+                        const isStone = map[r][c] === 1;
+                        const isFog = map[r][c] === null;
+                        const isPlayer = (r === playerRow && c === playerCol);
+                        const isCave = (r === caveRow && c === cols - 1);
+
+                        let cls = 'cell';
+                        if (isPlayer) cls += ' cell--player';
+                        else if (isFog) cls += ' cell--fog';
+                        else if (isStone) cls += ' cell--stone';
+                        else cls += ' cell--free';
+                        if (isPlayer && playerEffect === 'scannerPulse') cls += ' cell--scanner-pulse';
+                        if (isCave) cls += ' cell--cave';
+
+                        html += '<td class="' + cls + '">';
+                        if (isPlayer) {
+                            html += crashed
+                                ? '<span class="cell-icon">&#x1F4A5;</span>'
+                                : '<span class="cell-icon pulse">&#x1F680;</span>';
+                        } else if (isCave) {
+                            html += '<span class="cell-icon">&#x1F6A9;</span>';
+                        } else if (isFog) {
+                            html += '<span class="cell-icon">&#x1F32B;&#xFE0F;</span>';
+                        } else if (isStone) {
+                            html += '<span class="cell-icon" title="Stone">&#x1F3D4;&#xFE0F;</span>';
+                        }
+                        html += '</td>';
+                    }
+                    html += '</tr>';
+                }
+
+                html += '</tbody></table></div>';
+                return html;
+            };
+
+            const stopAnimation = () => {
+                if (animationTimer !== null) {
+                    clearTimeout(animationTimer);
+                    animationTimer = null;
+                }
+            };
+
+            const renderState = (data) => {
+                if (!data.active) {
+                    if (data.victory && typeof data.flag === 'string' && data.flag.trim() !== '') {
+                        noGameMsg.style.display = 'none';
+                        setStatus('VICTORY', 'success');
+                        posPill.textContent = '—';
+                        const sigV = JSON.stringify({ victory: true, flag: data.flag });
+                        if (sigV !== prevSignature) {
+                            showVictoryOverlay(data.flag.trim());
+                            prevSignature = sigV;
+                        }
+                        return;
+                    }
+                    noGameMsg.style.display = '';
+                    const existingGrid = gridContainer.querySelector('.grid-wrap');
+                    if (existingGrid) existingGrid.remove();
+                    setStatus('NO GAME', '');
+                    posPill.textContent = '—';
+                    setOverlay(false);
+                    prevSignature = '';
+                    return;
+                }
+
+                noGameMsg.style.display = 'none';
+
+                const sig = JSON.stringify({
+                    map: data.map,
+                    pr: data.player.row,
+                    pc: data.player.col,
+                    br: data.baseRow,
+                    cr: data.crashed,
+                    cm: data.crashMessage,
+                    pe: data.playerEffect || '',
+                    hc: Number.isInteger(data.headerEffectColumn) ? data.headerEffectColumn : -1,
+                    he: data.headerEffect || '',
+                    hm: data.headerMarker || '',
+                    hd: Array.isArray(data.disarmedTrapColumns) ? data.disarmedTrapColumns.join(',') : '',
+                    fi: data.finished,
+                });
+
+                if (sig !== prevSignature) {
+                    const gridHtml = buildGrid(
+                        data.map,
+                        data.player.row,
+                        data.player.col,
+                        data.baseRow,
+                        data.crashed,
+                        data.playerEffect || null,
+                        Number.isInteger(data.headerEffectColumn) ? data.headerEffectColumn : null,
+                        data.headerEffect || null,
+                        data.headerMarker || null,
+                        Array.isArray(data.disarmedTrapColumns) ? data.disarmedTrapColumns : []
+                    );
+                    const existing = gridContainer.querySelector('.grid-wrap');
+                    if (existing) existing.remove();
+                    gridContainer.insertAdjacentHTML('afterbegin', gridHtml);
+                    prevSignature = sig;
+                }
+
+                posPill.textContent = 'R' + (data.player.row + 1) + ' C' + (data.player.col + 1);
+
+                if (data.finished && typeof data.flag === 'string' && data.flag.trim() !== '') {
+                    setStatus('VICTORY', 'success');
+                    showVictoryOverlay(data.flag.trim());
+                } else if (data.finished) {
+                    setStatus('ARRIVED', 'success');
+                    setOverlay(false);
+                } else if (data.crashed) {
+                    setStatus('CRASHED', 'error');
+                    const crashText = typeof data.crashMessage === 'string' && data.crashMessage.trim() !== ''
+                        ? data.crashMessage.trim()
+                        : 'Rocket crashed!\nSend "start" to retry.';
+                    setOverlay(true, crashText, 'crashed');
+                    if (typeof data.secretFlag === 'string' && data.secretFlag.trim() !== '') {
+                        showVictoryOverlay(data.secretFlag.trim());
+                    }
+                } else {
+                    setStatus('EN ROUTE', 'active');
+                    setOverlay(false);
+                }
+            };
+
+            const playNextAnimationStep = () => {
+                if (animationQueue.length === 0) {
+                    animationTimer = null;
+                    return;
+                }
+
+                const frame = animationQueue.shift();
+                if (!frame || typeof frame !== 'object' || !frame.state || typeof frame.state !== 'object') {
+                    animationTimer = setTimeout(playNextAnimationStep, ANIMATION_STEP_MS);
+                    return;
+                }
+
+                const frameState = {
+                    ...frame.state,
+                    playerEffect: ['disarm', 'disarm_lock'].includes(frame.type) ? 'scannerPulse' : null,
+                    headerEffectColumn: Number.isInteger(frame.trapColumn) ? frame.trapColumn : null,
+                    headerEffect: ['trap_lock', 'disarm', 'disarm_lock'].includes(frame.type)
+                        ? 'scannerPulse'
+                        : (frame.type === 'disarm_burn' ? 'alertBlink' : null),
+                    headerMarker: ['trap_lock', 'disarm', 'disarm_lock'].includes(frame.type)
+                        ? 'satellite'
+                        : (frame.type === 'disarm_burn' ? 'fire' : null),
+                };
+
+                renderState(frameState);
+
+                if (frameState.crashed || (frameState.finished && frame.type === 'victory')) {
+                    animationQueue = [];
+                    animationTimer = null;
+                    return;
+                }
+
+                const frameDelay = Number.isInteger(frame.delayMs) && frame.delayMs > 0
+                    ? frame.delayMs
+                    : ANIMATION_STEP_MS;
+                animationTimer = setTimeout(playNextAnimationStep, frameDelay);
+            };
+
+            const enqueueAnimationSteps = (events) => {
+                if (!Array.isArray(events) || events.length === 0) return false;
+
+                let added = false;
+                for (const event of events) {
+                    if (!event || typeof event !== 'object') continue;
+                    const eventId = Number(event.id || 0);
+                    if (!Number.isInteger(eventId) || eventId <= lastEventId) continue;
+                    if (event.type === 'start') {
+                        stopAnimation();
+                        animationQueue = [];
+                    }
+                    animationQueue.push(event);
+                    lastEventId = eventId;
+                    added = true;
+                }
+
+                if (added && animationTimer === null) {
+                    playNextAnimationStep();
+                }
+
+                return added;
+            };
+
+            const poll = async () => {
+                if (fetchInFlight) return;
+                fetchInFlight = true;
+
+                try {
+                    const apiKey = await initApiKey();
+                    if (!apiKey) {
+                        setStatus('NO KEY', 'error');
+                        return;
+                    }
+
+                    const resp = await fetch('/goingthere_backend', {
+                        method: 'POST',
+                        cache: 'no-store',
+                        credentials: 'same-origin',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'Accept': 'application/json',
+                        },
+                        body: new URLSearchParams({
+                            key: apiKey,
+                            after_event_id: String(lastEventId),
+                        }),
+                    });
+
+                    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+                    const data = await resp.json();
+                    const queued = enqueueAnimationSteps(data.events);
+                    if (!queued && animationTimer === null) {
+                        if (!data.active) {
+                            stopAnimation();
+                        }
+                        renderState(data);
+                    }
+                } catch (e) {
+                    console.log('Poll error:', e);
+                } finally {
+                    fetchInFlight = false;
+                }
+            };
+
+            poll();
+            setInterval(poll, POLL_MS);
+        })();
+    </script>
+    <script defer
+        src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447"
+        integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ=="
+        data-cf-beacon='{"version":"2024.11.0","token":"4ef24304510d413eb950bcd2d4453a7a","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}'
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

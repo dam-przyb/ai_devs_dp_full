@@ -1,0 +1,10 @@
+{
+  "run_id": "20260601T180249Z",
+  "timestamp": "2026-06-01T18:02:59.122659+00:00",
+  "status": "solved",
+  "flag": "{FLG:ROTATEIT}",
+  "moves_planned": 9,
+  "moves_executed": 9,
+  "remaining_mismatches": [],
+  "error": null
+}

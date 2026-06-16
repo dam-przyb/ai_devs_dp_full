@@ -1,0 +1,254 @@
+{
+    "code": 20,
+    "events": [
+        {
+            "id": 1781619656477,
+            "type": "start",
+            "state": {
+                "active": true,
+                "victory": false,
+                "flag": null,
+                "map": [
+                    [
+                        1,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
+                    ],
+                    [
+                        0,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
+                    ],
+                    [
+                        0,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
+                    ]
+                ],
+                "player": {
+                    "row": 1,
+                    "col": 0
+                },
+                "baseRow": 2,
+                "crashed": false,
+                "crashReason": null,
+                "crashMessage": null,
+                "finished": false,
+                "secretFlag": null,
+                "disarmedTrapColumns": []
+            }
+        },
+        {
+            "id": 1781619656478,
+            "type": "move",
+            "state": {
+                "active": true,
+                "victory": false,
+                "flag": null,
+                "map": [
+                    [
+                        1,
+                        0,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
+                    ],
+                    [
+                        0,
+                        0,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
+                    ],
+                    [
+                        0,
+                        1,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
+                    ]
+                ],
+                "player": {
+                    "row": 1,
+                    "col": 1
+                },
+                "baseRow": 2,
+                "crashed": false,
+                "crashReason": null,
+                "crashMessage": null,
+                "finished": false,
+                "secretFlag": null,
+                "disarmedTrapColumns": []
+            }
+        },
+        {
+            "id": 1781619656479,
+            "type": "crash",
+            "state": {
+                "active": true,
+                "victory": false,
+                "flag": null,
+                "map": [
+                    [
+                        1,
+                        0,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
+                    ],
+                    [
+                        0,
+                        0,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
+                    ],
+                    [
+                        0,
+                        1,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
+                    ]
+                ],
+                "player": {
+                    "row": 1,
+                    "col": 1
+                },
+                "baseRow": 2,
+                "crashed": true,
+                "crashReason": "stone",
+                "crashMessage": "The rocket crashed. Send {\"command\":\"start\"} to begin again.",
+                "finished": false,
+                "secretFlag": null,
+                "disarmedTrapColumns": []
+            }
+        }
+    ],
+    "active": true,
+    "victory": false,
+    "flag": null,
+    "map": [
+        [
+            1,
+            0,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        ],
+        [
+            0,
+            0,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        ],
+        [
+            0,
+            1,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        ]
+    ],
+    "player": {
+        "row": 1,
+        "col": 1
+    },
+    "baseRow": 2,
+    "crashed": true,
+    "crashReason": "stone",
+    "crashMessage": "The rocket crashed. Send {\"command\":\"start\"} to begin again.",
+    "finished": false,
+    "secretFlag": null
+}

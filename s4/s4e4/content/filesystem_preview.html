@@ -1,0 +1,819 @@
+<!doctype html>
+<html lang="pl">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Filesystem Review</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;600;700&family=DM+Mono:wght@400;500&display=swap');
+
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-surface: #161616;
+            --border: #3a3a3a;
+            --border-strong: #4a4a4a;
+            --text-primary: #ffffff;
+            --text-muted: #888888;
+            --accent: #75f86f;
+            --accent-dim: rgba(117, 248, 111, 0.12);
+            --error: #ff8080;
+            --warning: #f78c6c;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Lexend Deca', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+            background: var(--bg-primary);
+            background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 24px 24px;
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 48px;
+        }
+
+        .app {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .title {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+        }
+
+        .meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .pill {
+            font-family: 'DM Mono', ui-monospace, Menlo, Consolas, monospace;
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            background: var(--bg-primary);
+        }
+
+        .pill--active {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .pill--error {
+            border-color: var(--error);
+            color: var(--error);
+        }
+
+        .layout {
+            display: flex;
+            gap: 24px;
+            min-height: 600px;
+        }
+
+        .panel {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .panel--tree {
+            flex: 1 1 45%;
+        }
+
+        .panel--preview {
+            flex: 1 1 55%;
+        }
+
+        .panel__head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .panel__label {
+            font-family: 'DM Mono', ui-monospace, Menlo, Consolas, monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+
+        .panel__body {
+            padding: 16px;
+            overflow: auto;
+            flex: 1;
+        }
+
+        details.folder {
+            border-left: 1px dashed var(--border);
+            margin-left: 8px;
+            padding-left: 12px;
+            margin-bottom: 8px;
+        }
+
+        details.folder>summary {
+            list-style: none;
+            cursor: pointer;
+            user-select: none;
+            font-size: 14px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 0;
+        }
+
+        details.folder>summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .folder-toggle {
+            display: inline-block;
+            width: 12px;
+            color: var(--text-muted);
+            font-family: 'DM Mono', ui-monospace, Menlo, Consolas, monospace;
+            text-align: center;
+        }
+
+        .folder-name {
+            overflow-wrap: anywhere;
+        }
+
+        .files {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding: 4px 0 8px 20px;
+        }
+
+        .file-btn {
+            appearance: none;
+            border: 1px solid transparent;
+            background: transparent;
+            color: var(--text-primary);
+            text-align: left;
+            cursor: pointer;
+            border-radius: 6px;
+            padding: 8px;
+            font-family: 'Lexend Deca', sans-serif;
+            font-size: 14px;
+            transition: background 0.12s ease, border-color 0.12s ease;
+            overflow-wrap: anywhere;
+        }
+
+        .file-btn:hover {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: var(--border);
+        }
+
+        .file-btn--active {
+            border-color: var(--accent);
+            background: linear-gradient(135deg, var(--accent-dim), transparent);
+        }
+
+        .file-row {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            justify-content: space-between;
+        }
+
+        .file-size {
+            color: var(--text-muted);
+            font-family: 'DM Mono', ui-monospace, Menlo, Consolas, monospace;
+            font-size: 11px;
+            white-space: nowrap;
+        }
+
+        .preview-empty {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .meta-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            font-size: 13px;
+        }
+
+        .meta-key {
+            font-family: 'DM Mono', ui-monospace, Menlo, Consolas, monospace;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-size: 11px;
+            min-width: 96px;
+        }
+
+        .meta-value {
+            font-family: 'DM Mono', ui-monospace, Menlo, Consolas, monospace;
+            color: var(--accent);
+            overflow-wrap: anywhere;
+        }
+
+        .code-block {
+            background: #111111;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 16px;
+            min-height: 280px;
+        }
+
+        .code-block--flag {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: clamp(20px, 4vw, 36px);
+            min-height: clamp(180px, 34vh, 340px);
+            overflow: hidden;
+            position: relative;
+            border-color: rgba(117, 248, 111, 0.4);
+            background:
+                radial-gradient(circle at 20% 20%, rgba(117, 248, 111, 0.22), transparent 46%),
+                radial-gradient(circle at 80% 25%, rgba(117, 248, 111, 0.12), transparent 44%),
+                radial-gradient(circle at 50% 85%, rgba(255, 255, 255, 0.06), transparent 42%),
+                linear-gradient(135deg, #121212 0%, #0f1710 45%, #101010 100%);
+            background-size: 170% 170%, 180% 180%, 200% 200%, 100% 100%;
+            animation: flagGlowShift 3.2s ease-in-out infinite alternate;
+        }
+
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-family: 'DM Mono', ui-monospace, Menlo, Consolas, monospace;
+            font-size: 12px;
+            line-height: 1.6;
+            color: var(--text-primary);
+        }
+
+        .flag-pre {
+            font-size: clamp(24px, 4.6vw, 36px);
+            line-height: 1.08;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            text-align: center;
+            color: var(--accent);
+            max-width: 100%;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+            text-shadow: 0 0 22px rgba(117, 248, 111, 0.28);
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes flagGlowShift {
+            0% {
+                background-position: 0% 0%, 100% 20%, 50% 100%, 50% 50%;
+            }
+
+            100% {
+                background-position: 100% 90%, 0% 70%, 60% 0%, 50% 50%;
+            }
+        }
+
+        .content-link {
+            color: var(--accent);
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .content-link:hover {
+            color: #9dff99;
+        }
+
+        .warning {
+            color: var(--warning);
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        .youtube-wrap {
+            margin-top: 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            background: #0d0d0d;
+        }
+
+        .youtube-iframe {
+            display: block;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border: 0;
+        }
+
+        @media (max-width: 1024px) {
+            body {
+                padding: 24px;
+            }
+
+            .layout {
+                flex-direction: column;
+            }
+
+            .panel--tree,
+            .panel--preview {
+                flex: 1 1 auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="app">
+        <header class="header">
+            <h1 class="title">Filesystem Review | S04E04</h1>
+            <div class="meta">
+                <span id="statusBadge" class="pill">Waiting for data</span>
+                <span id="counterBadge" class="pill">dirs: 0 | files: 0</span>
+                <span id="updatedBadge" class="pill">updated: -</span>
+            </div>
+        </header>
+
+        <section class="layout">
+            <article class="panel panel--tree">
+                <div class="panel__head">
+                    <span class="panel__label">Filesystem Tree</span>
+                    <span class="pill pill--active">refresh: 2s</span>
+                </div>
+                <div id="treePanel" class="panel__body"></div>
+            </article>
+
+            <article class="panel panel--preview">
+                <div class="panel__head">
+                    <span class="panel__label">File Preview</span>
+                    <span id="selectedPathBadge" class="pill">path: -</span>
+                </div>
+                <div class="panel__body">
+                    <div id="previewRoot" class="preview-empty">Kliknij nazwę pliku po lewej, aby zobaczyć zawartość i
+                        szczegóły.</div>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <script>
+        const treePanel = document.getElementById('treePanel');
+        const previewRoot = document.getElementById('previewRoot');
+        const statusBadge = document.getElementById('statusBadge');
+        const counterBadge = document.getElementById('counterBadge');
+        const updatedBadge = document.getElementById('updatedBadge');
+        const selectedPathBadge = document.getElementById('selectedPathBadge');
+
+        let selectedFilePath = null;
+        let selectedFileData = null;
+        let lastSignature = '';
+        let fetchInFlight = false;
+        let currentFilesByPath = new Map();
+        let currentFilesByName = new Map();
+
+        function formatTime(ts) {
+            if (!Number.isFinite(ts) || ts <= 0) return '-';
+            const dt = new Date(ts * 1000);
+            return dt.toLocaleString('pl-PL');
+        }
+
+        function collectOpenFolders() {
+            const open = new Set();
+            treePanel.querySelectorAll('details.folder[open]').forEach((el) => {
+                const p = el.getAttribute('data-path');
+                if (p) open.add(p);
+            });
+            return open;
+        }
+
+        function setStatus(kind, text) {
+            statusBadge.className = 'pill';
+            if (kind === 'ok') statusBadge.classList.add('pill--active');
+            if (kind === 'error') statusBadge.classList.add('pill--error');
+            statusBadge.textContent = text;
+        }
+
+        function normalizePath(path) {
+            if (typeof path !== 'string') return null;
+            let value = path.trim();
+            if (!value) return null;
+            if (!value.startsWith('/')) return null;
+            value = value.replace(/\/+/g, '/');
+            if (value.length > 1 && value.endsWith('/')) value = value.slice(0, -1);
+            return value;
+        }
+
+        function updateActiveFileButton() {
+            treePanel.querySelectorAll('.file-btn').forEach((btn) => {
+                if (btn.dataset.path === selectedFilePath) {
+                    btn.classList.add('file-btn--active');
+                } else {
+                    btn.classList.remove('file-btn--active');
+                }
+            });
+        }
+
+        function openDirectoryChainForFile(filePath) {
+            if (typeof filePath !== 'string' || !filePath.startsWith('/')) return;
+            const parts = filePath.split('/').filter(Boolean);
+            if (parts.length <= 1) return;
+
+            let currentPath = '';
+            for (let i = 0; i < parts.length - 1; i++) {
+                currentPath += '/' + parts[i];
+                treePanel.querySelectorAll('details.folder').forEach((details) => {
+                    if (details.getAttribute('data-path') === currentPath) {
+                        details.open = true;
+                    }
+                });
+            }
+        }
+
+        function getFileButtonByPath(filePath) {
+            const buttons = treePanel.querySelectorAll('.file-btn');
+            for (const btn of buttons) {
+                if (btn.dataset.path === filePath) return btn;
+            }
+            return null;
+        }
+
+        function selectFileByPath(path) {
+            if (!currentFilesByPath.has(path)) return false;
+            selectedFilePath = path;
+            selectedFileData = currentFilesByPath.get(path);
+            renderPreview();
+            openDirectoryChainForFile(path);
+            updateActiveFileButton();
+            const targetBtn = getFileButtonByPath(path);
+            if (targetBtn) {
+                targetBtn.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+            }
+            return true;
+        }
+
+        function resolveInternalLinkTarget(target) {
+            if (typeof target !== 'string') return null;
+            const raw = target.trim();
+            if (!raw) return null;
+
+            // External links are intentionally unsupported.
+            if (/^[a-z][a-z0-9+.-]*:\/\//i.test(raw) || raw.startsWith('//')) return null;
+
+            const stripped = raw.split('#')[0].split('?')[0].trim();
+            if (!stripped) return null;
+
+            if (stripped.startsWith('/')) {
+                const path = normalizePath(stripped);
+                if (path && currentFilesByPath.has(path)) return path;
+                return null;
+            }
+
+            const base = stripped.includes('/') ? stripped.split('/').pop() : stripped;
+            if (!base) return null;
+            if (currentFilesByName.has(base)) return currentFilesByName.get(base);
+            return null;
+        }
+
+        function renderContentWithLinks(content) {
+            const pre = document.createElement('pre');
+            const text = typeof content === 'string' ? content : '';
+            const regex = /\[([^\]\r\n]+)\]\(([^)\r\n]+)\)/g;
+            let lastIndex = 0;
+            let match;
+
+            while ((match = regex.exec(text)) !== null) {
+                if (match.index > lastIndex) {
+                    pre.appendChild(document.createTextNode(text.slice(lastIndex, match.index)));
+                }
+
+                const label = match[1];
+                const target = match[2];
+                const resolvedPath = resolveInternalLinkTarget(target);
+                if (resolvedPath) {
+                    const link = document.createElement('a');
+                    link.href = '#';
+                    link.className = 'content-link';
+                    link.textContent = label;
+                    link.addEventListener('click', (event) => {
+                        event.preventDefault();
+                        selectFileByPath(resolvedPath);
+                    });
+                    pre.appendChild(link);
+                } else {
+                    pre.appendChild(document.createTextNode(match[0]));
+                }
+
+                lastIndex = regex.lastIndex;
+            }
+
+            if (lastIndex < text.length) {
+                pre.appendChild(document.createTextNode(text.slice(lastIndex)));
+            }
+
+            return pre;
+        }
+
+        function extractYoutubeVideoId(text) {
+            if (typeof text !== 'string' || !text.trim()) return null;
+            const patterns = [
+                /(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?[^ \n\r]*v=([a-zA-Z0-9_-]{11})/i,
+                /(?:https?:\/\/)?(?:www\.)?youtu\.be\/([a-zA-Z0-9_-]{11})/i
+            ];
+
+            for (const pattern of patterns) {
+                const match = text.match(pattern);
+                if (match && match[1]) return match[1];
+            }
+
+            return null;
+        }
+
+        function renderPreview() {
+            previewRoot.innerHTML = '';
+
+            if (!selectedFileData || !selectedFilePath) {
+                const empty = document.createElement('div');
+                empty.className = 'preview-empty';
+                empty.textContent = 'Kliknij nazwę pliku po lewej, aby zobaczyć zawartość i szczegóły.';
+                previewRoot.appendChild(empty);
+                selectedPathBadge.textContent = 'path: -';
+                return;
+            }
+
+            selectedPathBadge.textContent = `path: ${selectedFilePath}`;
+
+            const metaList = document.createElement('div');
+            metaList.className = 'meta-list';
+
+            const fields = [
+                ['Size', `${selectedFileData.size ?? 0} B`],
+                ['Created', formatTime(selectedFileData.created_at)],
+                ['Updated', formatTime(selectedFileData.updated_at)]
+            ];
+
+            fields.forEach(([key, value]) => {
+                const row = document.createElement('div');
+                row.className = 'meta-item';
+
+                const keyEl = document.createElement('span');
+                keyEl.className = 'meta-key';
+                keyEl.textContent = key;
+
+                const valueEl = document.createElement('span');
+                valueEl.className = 'meta-value';
+                valueEl.textContent = value;
+
+                row.appendChild(keyEl);
+                row.appendChild(valueEl);
+                metaList.appendChild(row);
+            });
+
+            const codeBlock = document.createElement('div');
+            codeBlock.className = 'code-block';
+            const content = typeof selectedFileData.content === 'string' ? selectedFileData.content : '';
+            const trimmedContent = content.trim();
+            const isFlagContent = /^\{FLG:[^}]+\}$/.test(trimmedContent);
+
+            if (isFlagContent) {
+                codeBlock.classList.add('code-block--flag');
+            }
+
+            const pre = isFlagContent
+                ? (() => {
+                    const flagPre = document.createElement('pre');
+                    flagPre.className = 'flag-pre';
+                    flagPre.textContent = trimmedContent;
+                    return flagPre;
+                })()
+                : renderContentWithLinks(content);
+            codeBlock.appendChild(pre);
+
+            previewRoot.appendChild(metaList);
+            previewRoot.appendChild(codeBlock);
+
+            const youtubeVideoId = extractYoutubeVideoId(content);
+            if (youtubeVideoId) {
+                const youtubeWrap = document.createElement('div');
+                youtubeWrap.className = 'youtube-wrap';
+
+                const iframe = document.createElement('iframe');
+                iframe.className = 'youtube-iframe';
+                iframe.src = `https://www.youtube-nocookie.com/embed/${youtubeVideoId}`;
+                iframe.title = 'YouTube player';
+                iframe.loading = 'lazy';
+                iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+                iframe.allowFullscreen = true;
+                iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+
+                youtubeWrap.appendChild(iframe);
+                previewRoot.appendChild(youtubeWrap);
+            }
+        }
+
+        function createFileButton(file) {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'file-btn';
+            btn.dataset.path = file.path;
+            if (selectedFilePath === file.path) {
+                btn.classList.add('file-btn--active');
+            }
+
+            const row = document.createElement('span');
+            row.className = 'file-row';
+
+            const label = document.createElement('span');
+            label.textContent = `📄 ${file.name}`;
+
+            const size = document.createElement('span');
+            size.className = 'file-size';
+            size.textContent = `${file.size ?? 0} B`;
+
+            row.appendChild(label);
+            row.appendChild(size);
+            btn.appendChild(row);
+
+            btn.addEventListener('click', () => {
+                selectFileByPath(file.path);
+            });
+
+            return btn;
+        }
+
+        function createDirectoryNode(node, openPaths, rootPath) {
+            const details = document.createElement('details');
+            details.className = 'folder';
+            details.setAttribute('data-path', node.path);
+
+            if (node.path === rootPath || openPaths.has(node.path)) {
+                details.open = true;
+            }
+
+            const summary = document.createElement('summary');
+
+            const toggle = document.createElement('span');
+            toggle.className = 'folder-toggle';
+            toggle.textContent = details.open ? '▾' : '▸';
+            details.addEventListener('toggle', () => {
+                toggle.textContent = details.open ? '▾' : '▸';
+            });
+
+            const name = document.createElement('span');
+            name.className = 'folder-name';
+            name.textContent = `📁 ${node.name === '/' ? '/' : node.name}`;
+
+            summary.appendChild(toggle);
+            summary.appendChild(name);
+            details.appendChild(summary);
+
+            const childWrap = document.createElement('div');
+            childWrap.className = 'files';
+            details.appendChild(childWrap);
+
+            (node.children || []).forEach((child) => {
+                if (child.type === 'directory') {
+                    childWrap.appendChild(createDirectoryNode(child, openPaths, rootPath));
+                    return;
+                }
+                childWrap.appendChild(createFileButton(child));
+            });
+
+            return details;
+        }
+
+        function gatherFileByPath(node, map = new Map()) {
+            if (!node || typeof node !== 'object') return map;
+            (node.children || []).forEach((child) => {
+                if (child.type === 'file' && typeof child.path === 'string') {
+                    map.set(child.path, child);
+                    return;
+                }
+                if (child.type === 'directory') {
+                    gatherFileByPath(child, map);
+                }
+            });
+            return map;
+        }
+
+        function renderTree(data) {
+            const openPaths = collectOpenFolders();
+            treePanel.innerHTML = '';
+
+            if (!data || !data.tree || data.tree.type !== 'directory') {
+                const empty = document.createElement('div');
+                empty.className = 'warning';
+                empty.textContent = 'Brak poprawnych danych drzewa.';
+                treePanel.appendChild(empty);
+                return;
+            }
+
+            const treeNode = createDirectoryNode(data.tree, openPaths, data.tree.path || '/');
+            treePanel.appendChild(treeNode);
+
+            const allFiles = gatherFileByPath(data.tree);
+            currentFilesByPath = allFiles;
+            currentFilesByName = new Map();
+            allFiles.forEach((file, path) => {
+                if (file && typeof file.name === 'string') currentFilesByName.set(file.name, path);
+            });
+
+            if (selectedFilePath && allFiles.has(selectedFilePath)) {
+                selectedFileData = allFiles.get(selectedFilePath);
+            } else if (selectedFilePath) {
+                selectedFilePath = null;
+                selectedFileData = null;
+            }
+            renderPreview();
+            updateActiveFileButton();
+        }
+
+        async function fetchFilesystemState() {
+            if (fetchInFlight) return;
+            fetchInFlight = true;
+
+            try {
+                const resp = await fetch('./filesystem_backend.php', {
+                    method: 'GET',
+                    cache: 'no-store',
+                    credentials: 'same-origin',
+                    headers: { 'Accept': 'application/json' }
+                });
+
+                const data = await resp.json();
+                if (!resp.ok || !data || typeof data !== 'object' || typeof data.code !== 'number' || data.code < 0) {
+                    const message = data && data.message ? data.message : `HTTP ${resp.status}`;
+                    throw new Error(message);
+                }
+
+                const signature = JSON.stringify({
+                    updated_at: data.stats && data.stats.updated_at ? data.stats.updated_at : 0,
+                    files: data.stats && data.stats.files ? data.stats.files : 0,
+                    dirs: data.stats && data.stats.directories ? data.stats.directories : 0,
+                    tree: data.tree
+                });
+
+                if (signature !== lastSignature) {
+                    lastSignature = signature;
+                    renderTree(data);
+                }
+
+                const stats = data.stats && typeof data.stats === 'object' ? data.stats : { directories: 0, files: 0, updated_at: 0 };
+                counterBadge.textContent = `dirs: ${stats.directories} | files: ${stats.files}`;
+                updatedBadge.textContent = `updated: ${formatTime(stats.updated_at)}`;
+                setStatus('ok', 'Live');
+            } catch (err) {
+                setStatus('error', `Error: ${err.message}`);
+            } finally {
+                fetchInFlight = false;
+            }
+        }
+
+        fetchFilesystemState();
+        setInterval(fetchFilesystemState, 2000);
+    </script>
+    <script defer
+        src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447"
+        integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ=="
+        data-cf-beacon='{"version":"2024.11.0","token":"4ef24304510d413eb950bcd2d4453a7a","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}'
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

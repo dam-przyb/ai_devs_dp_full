@@ -1,0 +1,144 @@
+{
+    "timestamp": "20260616_162054",
+    "start_response": {
+        "code": 110,
+        "message": "New game started. Map is 3 by 12 cells. You are at column 1, middle row. Reach the base at the last column.",
+        "player": {
+            "row": 2,
+            "col": 1
+        },
+        "base": {
+            "row": 3,
+            "col": 12
+        },
+        "currentColumn": {
+            "column": 1,
+            "yourRow": 2,
+            "stoneRow": 1,
+            "freeRows": [
+                2,
+                3
+            ]
+        }
+    },
+    "steps": [
+        {
+            "step_number": 1,
+            "current_col": 1,
+            "current_row": 2,
+            "scanner_checks": [
+                {
+                    "raw_response": "\"It's   cleeear!\"",
+                    "status": "clear"
+                }
+            ],
+            "hint_raw": "The path on your port side stays open, and nothing blocks the nose of the craft. The trouble is sitting off your starboard wing.",
+            "hint_llm_response": "{\n  \"rock_rows\": [3],\n  \"reasoning\": \"The hint mentions 'port side', 'nose', 'starboard wing' — these are physical vehicle parts, so this is Vehicle-Relative interpretation centered on the pilot at row 2. Port (towards row 1) is clear, nose (row 2) is clear, and starboard (towards row 3) has the obstacle. Therefore the rock is at row 3.\"\n}",
+            "stone_rows": [
+                3
+            ],
+            "candidates": {
+                "all": [
+                    [
+                        "left",
+                        1
+                    ],
+                    [
+                        "go",
+                        2
+                    ],
+                    [
+                        "right",
+                        3
+                    ]
+                ],
+                "valid_non_stone": [
+                    [
+                        "go",
+                        2
+                    ],
+                    [
+                        "left",
+                        1
+                    ]
+                ]
+            },
+            "selected_move": {
+                "command": "go",
+                "target_row": 2
+            },
+            "move_response": {
+                "code": 120,
+                "message": "Move accepted.",
+                "player": {
+                    "row": 2,
+                    "col": 2
+                },
+                "currentColumn": {
+                    "column": 2,
+                    "yourRow": 2,
+                    "stoneRow": 3,
+                    "freeRows": [
+                        1,
+                        2
+                    ]
+                }
+            },
+            "error": null,
+            "hint_llm_prompt": "You are a navigator on a 3-row grid (rows 1, 2, 3).\n- Row 1 is the top row.\n- Row 2 is the middle row.\n- Row 3 is the bottom row.\n\nThe pilot is currently at row 2.\nThe target destination base is at row 3.\n\nWe received a radio message describing where the obstacle (rock) is in the next column relative to the pilot's position and heading, or relative to the destination base:\n\"The path on your port side stays open, and nothing blocks the nose of the craft. The trouble is sitting off your starboard wing.\"\n\nInterpretation rules:\n1. Classification of the Frame of Reference:\n   - **Vehicle-Relative (relative to row 2):** If the hint explicitly mentions the vehicle or its parts (e.g. \"cockpit\", \"cockpit's nose\", \"nose\", \"hull\", \"wing\", \"wings\", \"trajectory\", \"bow\").\n     In this case:\n     - Center/Front/Bow/Nose/Flight line refers to row 2.\n     - Port/Left/Larboard refers to the row(s) towards row 1.\n     - Starboard/Right refers to the row(s) towards row 3.\n   - **Base-Relative (relative to row 3):** If the hint uses general grid path descriptors and does NOT explicitly mention physical vehicle parts (e.g. \"line of travel\", \"flight line\", \"route\", \"path\", \"lanes\", \"in front\", \"front of you\", \"straight ahead\", \"ahead\", \"center\", \"centered\").\n     In this case:\n     - Center/Front/Ahead/Centered refers to the target destination base row 3.\n     - Port/Left/Sides refers to the row(s) away from the base row towards row 1.\n     - Starboard/Right/Sides refers to the row(s) away from the base row towards row 3.\n\n2. Examples of Base-Relative interpretation (when target base is at row 3):\n   - \"obstacle is planted right in front\" -> rock is at row 3.\n   - \"centered in your line of travel\" -> rock is at row 3.\n   - \"ahead is the only place you should not trust\" -> rock is at row 3.\n   - \"edges of the route are empty, center is occupied\" -> rock is at row 3.\n\n3. Multi-row rules:\n   If a direction points to multiple possible rows (e.g. if the reference row is row 1 and hint says \"starboard side has the rock\"), list all possible rows (e.g. [2, 3]).\n\nIdentify which row(s) (1, 2, or 3) contain the rock in the next column.\nReturn a JSON object containing:\n- \"rock_rows\": a list of integers (containing any of 1, 2, 3) representing the row(s) where the rock is located.\n- \"reasoning\": a brief explanation.\n\nReturn ONLY the JSON. No markdown code block wrapper."
+        },
+        {
+            "step_number": 2,
+            "current_col": 2,
+            "current_row": 2,
+            "scanner_checks": [
+                {
+                    "raw_response": "\"Its cleeeear\"",
+                    "status": "clear"
+                }
+            ],
+            "hint_raw": "Your flanks are clean for now. The impact risk lies straight along the current heading.",
+            "hint_llm_response": "{\n  \"rock_rows\": [2],\n  \"reasoning\": \"The message says 'flanks are clean' and 'impact risk lies straight along the current heading.' The hint uses 'heading' which refers to the vehicle's trajectory — this is vehicle-relative. The pilot is at row 2, and 'straight along the current heading' means center/front relative to the vehicle, which is row 2. Therefore the rock is at row 2.\"\n}",
+            "stone_rows": [
+                2
+            ],
+            "candidates": {
+                "all": [
+                    [
+                        "left",
+                        1
+                    ],
+                    [
+                        "go",
+                        2
+                    ],
+                    [
+                        "right",
+                        3
+                    ]
+                ],
+                "valid_non_stone": [
+                    [
+                        "right",
+                        3
+                    ],
+                    [
+                        "left",
+                        1
+                    ]
+                ]
+            },
+            "selected_move": {
+                "command": "right",
+                "target_row": 3
+            },
+            "move_response": null,
+            "error": "The rocket crashed. Send {\"command\":\"start\"} to begin again.",
+            "hint_llm_prompt": "You are a navigator on a 3-row grid (rows 1, 2, 3).\n- Row 1 is the top row.\n- Row 2 is the middle row.\n- Row 3 is the bottom row.\n\nThe pilot is currently at row 2.\nThe target destination base is at row 3.\n\nWe received a radio message describing where the obstacle (rock) is in the next column relative to the pilot's position and heading, or relative to the destination base:\n\"Your flanks are clean for now. The impact risk lies straight along the current heading.\"\n\nInterpretation rules:\n1. Classification of the Frame of Reference:\n   - **Vehicle-Relative (relative to row 2):** If the hint explicitly mentions the vehicle or its parts (e.g. \"cockpit\", \"cockpit's nose\", \"nose\", \"hull\", \"wing\", \"wings\", \"trajectory\", \"bow\").\n     In this case:\n     - Center/Front/Bow/Nose/Flight line refers to row 2.\n     - Port/Left/Larboard refers to the row(s) towards row 1.\n     - Starboard/Right refers to the row(s) towards row 3.\n   - **Base-Relative (relative to row 3):** If the hint uses general grid path descriptors and does NOT explicitly mention physical vehicle parts (e.g. \"line of travel\", \"flight line\", \"route\", \"path\", \"lanes\", \"in front\", \"front of you\", \"straight ahead\", \"ahead\", \"center\", \"centered\").\n     In this case:\n     - Center/Front/Ahead/Centered refers to the target destination base row 3.\n     - Port/Left/Sides refers to the row(s) away from the base row towards row 1.\n     - Starboard/Right/Sides refers to the row(s) away from the base row towards row 3.\n\n2. Examples of Base-Relative interpretation (when target base is at row 3):\n   - \"obstacle is planted right in front\" -> rock is at row 3.\n   - \"centered in your line of travel\" -> rock is at row 3.\n   - \"ahead is the only place you should not trust\" -> rock is at row 3.\n   - \"edges of the route are empty, center is occupied\" -> rock is at row 3.\n\n3. Multi-row rules:\n   If a direction points to multiple possible rows (e.g. if the reference row is row 1 and hint says \"starboard side has the rock\"), list all possible rows (e.g. [2, 3]).\n\nIdentify which row(s) (1, 2, or 3) contain the rock in the next column.\nReturn a JSON object containing:\n- \"rock_rows\": a list of integers (containing any of 1, 2, 3) representing the row(s) where the rock is located.\n- \"reasoning\": a brief explanation.\n\nReturn ONLY the JSON. No markdown code block wrapper."
+        }
+    ],
+    "final_state": {
+        "status": "crashed",
+        "error": "The rocket crashed. Send {\"command\":\"start\"} to begin again."
+    }
+}

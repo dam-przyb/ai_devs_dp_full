@@ -1,0 +1,81 @@
+{
+    "timestamp": "20260616_170610",
+    "start_response": {
+        "code": 110,
+        "message": "New game started. Map is 3 by 12 cells. You are at column 1, middle row. Reach the base at the last column.",
+        "player": {
+            "row": 2,
+            "col": 1
+        },
+        "base": {
+            "row": 1,
+            "col": 12
+        },
+        "currentColumn": {
+            "column": 1,
+            "yourRow": 2,
+            "stoneRow": 3,
+            "freeRows": [
+                1,
+                2
+            ]
+        }
+    },
+    "steps": [
+        {
+            "step_number": 1,
+            "current_col": 1,
+            "current_row": 2,
+            "scanner_checks": [
+                {
+                    "raw_response": "\"it's   cleAR!\"",
+                    "status": "clear"
+                }
+            ],
+            "hint_raw": "Port and starboard stay friendly. The bow, however, is aimed right at a stone.",
+            "hint_llm_response": "Forward-danger pattern detected. pilot=2!=base=1. Blocking both: [1, 2]",
+            "hint_interpretation_mode": "forward_danger_filter",
+            "pilot_at_edge": false,
+            "stone_rows": [
+                1,
+                2
+            ],
+            "candidates": {
+                "all": [
+                    [
+                        "left",
+                        1
+                    ],
+                    [
+                        "go",
+                        2
+                    ],
+                    [
+                        "right",
+                        3
+                    ]
+                ],
+                "valid_non_stone": [
+                    [
+                        "right",
+                        3
+                    ]
+                ]
+            },
+            "safe_rows_after_filter": [
+                3
+            ],
+            "selected_move": {
+                "command": "right",
+                "target_row": 3
+            },
+            "move_response": null,
+            "error": "The rocket crashed. Send {\"command\":\"start\"} to begin again.",
+            "hint_llm_prompt": "[FORWARD-DANGER PRE-FILTER]"
+        }
+    ],
+    "final_state": {
+        "status": "crashed",
+        "error": "The rocket crashed. Send {\"command\":\"start\"} to begin again."
+    }
+}

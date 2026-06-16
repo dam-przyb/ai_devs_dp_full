@@ -1,0 +1,164 @@
+(.venv) PS C:\zz_projects\ai_devs4_part2> python s5/s5e4/solve_goingthere.py
+Starting new game session...
+Start Response: {
+  "code": 110,
+  "message": "New game started. Map is 3 by 12 cells. You are at column 1, middle row. Reach the base at the last column.",
+  "player": {
+    "row": 2,
+    "col": 1
+  },
+  "base": {
+    "row": 1,
+    "col": 12
+  },
+  "currentColumn": {
+    "column": 1,
+    "yourRow": 2,
+    "stoneRow": 3,
+    "freeRows": [
+      1,
+      2
+    ]
+  }
+}
+Started at (col=1, row=2). Target base is at (col=12, row=1).
+
+--- STEP 1 -> 2 ---
+Frequency check: It's clear! No active radar targeting us. Raw response: "It's   cleeear!"
+Fetching radio hint for the next column...
+Hint received: 'The hazard is not trailing your wings. It is waiting in the exact path of the bow.'
+Rock in column 2 is potentially at rows [2]
+Valid moves sorted (best first): [('left', 1), ('right', 3)]
+Selected move command: 'left' to row 1
+Sending move command 'left'...
+Move Response: {
+  "code": 120,
+  "message": "Move accepted.",
+  "player": {
+    "row": 1,
+    "col": 2
+  },
+  "currentColumn": {
+    "column": 2,
+    "yourRow": 1,
+    "stoneRow": 2,
+    "freeRows": [
+      1,
+      3
+    ]
+  }
+}
+
+--- STEP 2 -> 3 ---
+[1/5] Request to https://hub.ag3nts.org/api/frequencyScanner?key=9b2b37d3-dfab-42e0-a4b2-d84454981394 returned status 502. Content: <!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en-US"> <![endif]-->
+<!--[if IE 8]>    <html class="no-. Retrying...
+Frequency check: Radar detected! Scanner response: {
+    "beingTrackeb": true,
+    "frepuency": 415,
+    "bata": {
+        "weap0nType": "air-to-air missile"
+        "betecti0nC0be": "pLieUi"
+    }
+}
+Decoded radar info -> Frequency: 415, Detection Code: pLieUi
+Computed disarmHash: 4e33b2a2676fc62629f57dd04accc8e7f484215d
+Disarm request sent. Status: 200, Response: {"code":110,"message":"Trap disarmed.","column":2}
+Frequency check: It's clear! No active radar targeting us. Raw response: "It's clear!"
+Fetching radio hint for the next column...
+Hint received: 'Starboard is the side that currently carries the risk. The bow and port side remain clear.'
+Rock in column 3 is potentially at rows [2, 3]
+Valid moves sorted (best first): [('go', 1)]
+Selected move command: 'go' to row 1
+Sending move command 'go'...
+Move Response: {
+  "code": 120,
+  "message": "Move accepted.",
+  "player": {
+    "row": 1,
+    "col": 3
+  },
+  "currentColumn": {
+    "column": 3,
+    "yourRow": 1,
+    "stoneRow": 2,
+    "freeRows": [
+      1,
+      3
+    ]
+  }
+}
+
+--- STEP 3 -> 4 ---
+Frequency check: It's clear! No active radar targeting us. Raw response: "iT's cLEeeeeAR!"
+Fetching radio hint for the next column...
+Hint received: 'Your instruments read empty space in front and to the left. The solid threat is beside starboard.'
+Rock in column 4 is potentially at rows [3]
+Valid moves sorted (best first): [('go', 1), ('right', 2)]
+Selected move command: 'go' to row 1
+Sending move command 'go'...
+Move Response: {
+  "code": 120,
+  "message": "Move accepted.",
+  "player": {
+    "row": 1,
+    "col": 4
+  },
+  "currentColumn": {
+    "column": 4,
+    "yourRow": 1,
+    "stoneRow": 3,
+    "freeRows": [
+      1,
+      2
+    ]
+  }
+}
+
+--- STEP 4 -> 5 ---
+Frequency check: It's clear! No active radar targeting us. Raw response: "It's    cleeeeear!"
+Fetching radio hint for the next column...
+Hint received: 'The stone is centered in your line of travel, while port and starboard remain clear.'
+Rock in column 5 is potentially at rows [1]
+Valid moves sorted (best first): [('right', 2)]
+Selected move command: 'right' to row 2
+Sending move command 'right'...
+Move Response: {
+  "code": 120,
+  "message": "Move accepted.",
+  "player": {
+    "row": 2,
+    "col": 5
+  },
+  "currentColumn": {
+    "column": 5,
+    "yourRow": 2,
+    "stoneRow": 1,
+    "freeRows": [
+      2,
+      3
+    ]
+  }
+}
+
+--- STEP 5 -> 6 ---
+[1/5] Request to https://hub.ag3nts.org/api/frequencyScanner?key=9b2b37d3-dfab-42e0-a4b2-d84454981394 returned status 502. Content: <!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en-US"> <![endif]-->
+<!--[if IE 8]>    <html class="no-. Retrying...
+[2/5] Request to https://hub.ag3nts.org/api/frequencyScanner?key=9b2b37d3-dfab-42e0-a4b2-d84454981394 returned status 502. Content: <!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en-US"> <![endif]-->
+<!--[if IE 8]>    <html class="no-. Retrying...
+Frequency check: It's clear! No active radar targeting us. Raw response: "IT's cLeeaR!"
+Fetching radio hint for the next column...
+Hint received: 'Port gives room, starboard gives room, and straight flight does not. A rock is in front.'
+Rock in column 6 is potentially at rows [2]
+Valid moves sorted (best first): [('left', 1), ('right', 3)]
+Selected move command: 'left' to row 1
+Sending move command 'left'...
+
+!!! ROCKET CRASHED !!! Details: The rocket crashed. Send {"command":"start"} to begin again.
+
+Game session completed.

@@ -1,0 +1,54 @@
+{
+    "code": 0,
+    "message": "{FLG:JUSTEATIT}",
+    "orders": [
+        {
+            "id": "5e9976501471d1497927451a5c75f46c",
+            "title": "Delivery for Opalino",
+            "destination": 991828,
+            "city": "Opalino"
+        },
+        {
+            "id": "aa60a827e42a98f149e92732d8a5acec",
+            "title": "Delivery for Domatowo",
+            "destination": 761834,
+            "city": "Domatowo"
+        },
+        {
+            "id": "d30b759d32df4ade19711e0b1771d83a",
+            "title": "Delivery for Brudzewo",
+            "destination": 234434,
+            "city": "Brudzewo"
+        },
+        {
+            "id": "38a88dee4dfc61acbd28a21c0b53a492",
+            "title": "Delivery for Darzlubie",
+            "destination": 676323,
+            "city": "Darzlubie"
+        },
+        {
+            "id": "cab1f6a071968cbe01df896b95f2e158",
+            "title": "Delivery for Celbowo",
+            "destination": 741906,
+            "city": "Celbowo"
+        },
+        {
+            "id": "5ea5d1f0cc9268e1ff4eee697522c3b9",
+            "title": "Delivery for Mechowo",
+            "destination": 695992,
+            "city": "Mechowo"
+        },
+        {
+            "id": "4a5dd90be9c0a7d00b7a9e2930fc98ac",
+            "title": "Delivery for Puck",
+            "destination": 140606,
+            "city": "Puck"
+        },
+        {
+            "id": "b3840ddf65a41531e5fdcfd947275ea2",
+            "title": "Delivery for Karlinkowo",
+            "destination": 707536,
+            "city": "Karlinkowo"
+        }
+    ]
+}

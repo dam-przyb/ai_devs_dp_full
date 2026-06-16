@@ -1,0 +1,5 @@
+{
+    "code": 101,
+    "message": "Baterie w nadajniku padly, ale mamy juz dostatecznie duzo materialu, aby rozpoczac analize.",
+    "hint": "Możesz wywołać akcję \"start\" aby zacząć od nowa jeśli potrzebujesz"
+}

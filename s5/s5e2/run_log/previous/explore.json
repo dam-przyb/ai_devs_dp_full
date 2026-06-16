@@ -1,0 +1,14 @@
+{
+    "action_help": {
+        "error": "400 Client Error: Bad Request for url: https://hub.ag3nts.org/verify"
+    },
+    "tool_help": {
+        "error": "400 Client Error: Bad Request for url: https://hub.ag3nts.org/verify"
+    },
+    "action_start": {
+        "code": 110,
+        "message": "Phonecall session started.",
+        "msg": "Przez najbliższe 30 minut możesz prowadzić rozmowę.",
+        "action": "start"
+    }
+}

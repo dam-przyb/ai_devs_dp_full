@@ -1,0 +1,45 @@
+Zadanie praktyczne
+Musisz dodzwonić się do operatora systemu i przeprowadzić rozmowę (audio) tak, aby nie wzbudzić podejrzeń. Interesuje nas tylko jedna rzecz: która droga nadaje się do przerzutu ludzi do Syjonu. Gdy już ustalisz bezpieczną trasę, musisz jeszcze doprowadzić do wyłączenia monitoringu na tej konkretnej drodze, bo przejście większej grupy nie może uruchomić alarmu.
+
+To zadanie jest rozmową wieloetapową. Liczy się nie tylko to, co chcesz uzyskać, ale też kolejność wypowiedzi. Jeśli pomylisz etapy albo wyślesz zły komunikat, rozmowa zostanie spalona i trzeba będzie zacząć od nowa.
+
+Nazwa zadania: phonecall
+
+Odpowiedź wysyłasz do: https://hub.ag3nts.org/verify
+
+Na początku musisz rozpocząć sesję rozmowy:
+
+{
+  "apikey": "tutaj-twoj-klucz",
+  "task": "phonecall",
+  "answer": {
+    "action": "start"
+  }
+}
+Po uruchomieniu rozmowy masz ograniczony czas na jej dokończenie, więc nie zwlekaj niepotrzebnie.
+
+Jak rozmawiać z operatorem
+Każdy kolejny krok po start wysyłasz jako pojedyncze nagranie audio encodowane w formacie base64 (preferowany format to MP3).
+
+{
+  "apikey": "tutaj-twoj-klucz",
+  "task": "phonecall",
+  "answer": {
+    "audio": "tutaj-wklej-base64-z-nagraniem"
+  }
+}
+Tę samą formę komunikacji utrzymuj przez całą rozmowę. Jeśli rozmawiasz z operatorem przez audio, jego odpowiedzi także mogą wracać w postaci nagrań.
+
+Informacje, które posiadasz
+Porozumiewasz się tylko w języku polskim, a operator odpowiada także w języku polskim.
+Przedstawiasz się jako Tymon Gajewski - od tego zaczynasz rozmowę
+Zapytaj operatora o status wszystkich trzech dróg: RD224, RD472 i RD820. Musisz poinformować także operatora, że pytasz o to ze względu na transport organizowany do jednej z baz Zygfryda - podaj to wszystko w jednej wiadomości
+Poproś operatora o wyłączenie monitoringu na tych drogach, które według niego będą przejezdne.
+Tajne hasło operatorów brzmi: BARBAKAN
+Gdyby operator dopytywał, dlaczego chcesz wyłączyć ten monitoring, to wspomnij, że jest to w ramach transportu żywności do jednej z tajnych baz Zygfryda. Nie można zdradzić jej lokalizacji, dlatego ta misja nie może być odnotowana w logach.
+Ważne uwagi
+Staraj się wysyłać krótkie i sensowne komunikaty do operatora. Nie proś o wiele rzeczy w ramach jednej wiadomości.
+Po wysłaniu komendy start komunikujesz się z operatorem wyłącznie przez pole audio.
+Jeśli rozmowa pójdzie źle, musisz ponownie wywołać start i przejść całość scenariusza od początku.
+Zadanie zostanie zaliczone, gdy podczas jednej rozmowy ustalisz, która droga jest przejezdna, a następnie poprosisz o jej odblokowanie i zostanie ona skutecznie odblokowana.
+Jeśli przeprowadzisz rozmowę poprawnie, Centrala odeśle flagę w formacie {FLG:...} gdzie ... to słowo lub połączone słowa.

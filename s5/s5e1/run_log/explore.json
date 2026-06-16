@@ -1,0 +1,8 @@
+{
+    "action_help": {
+        "error": "400 Client Error: Bad Request for url: https://hub.ag3nts.org/verify"
+    },
+    "tool_help": {
+        "error": "400 Client Error: Bad Request for url: https://hub.ag3nts.org/verify"
+    }
+}

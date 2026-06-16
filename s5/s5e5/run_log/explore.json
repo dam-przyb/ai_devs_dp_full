@@ -1,0 +1,41 @@
+{
+  "code": 14,
+  "message": "Timetravel API help",
+  "actions": [
+    "help",
+    "getConfig",
+    "reset",
+    "configure"
+  ],
+  "configure": {
+    "requiredFields": [
+      "action",
+      "param",
+      "value"
+    ],
+    "editableParams": [
+      {
+        "param": "day",
+        "range": "1-31"
+      },
+      {
+        "param": "month",
+        "range": "1-12"
+      },
+      {
+        "param": "year",
+        "range": "1500-2499"
+      },
+      {
+        "param": "syncRatio",
+        "range": "0-1 (max 2 decimals, must match formula from documentation)"
+      },
+      {
+        "param": "stabilization",
+        "range": "0-1000"
+      }
+    ]
+  },
+  "note": "PT-A, PT-B and PWR are configured in the web interface, not via this API.",
+  "ui": "https://hub.ag3nts.org/timetravel_preview"
+}
