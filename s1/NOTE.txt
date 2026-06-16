@@ -1,0 +1,1 @@
+Season one lessons are made in different form - Django web app visualisation with python files under it. Eventualy this approach was abandoned and replace with iterative process of creating .py files like in seasons s2-s5.
