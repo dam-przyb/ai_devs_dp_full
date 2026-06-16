@@ -46,11 +46,6 @@ sqlite.db
 Thumbs.db
 desktop.ini
 
-# Zip files / archives
-*.zip
-*.tar.gz
-*.rar
-
 # IDE/Editor files
 .idea/
 .vscode/
